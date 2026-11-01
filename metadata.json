@@ -1,0 +1,8 @@
+{
+  "name": "WhatsApp Personal Broadcast Desk",
+  "description": "Secure multi-user dashboard for personal WhatsApp broadcasts with email authentication, contact management, campaign composer, and delivery reports.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

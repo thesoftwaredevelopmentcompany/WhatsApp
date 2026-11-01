@@ -1,0 +1,102 @@
+{
+  "users": {
+    "user_demo_1": {
+      "id": "user_demo_1",
+      "email": "thesoftwaredevelopmentcompany@gmail.com",
+      "name": "Development Admin",
+      "company": "The Software Development Company",
+      "passwordHash": "$2b$10$bjqnc3/9q09ZFp0HcEPrIORgCBplSitfobcMtQsHrlx8Gt5Z978jS",
+      "createdAt": "2026-11-01T18:11:03.593Z"
+    },
+    "u_1793556701207_e4ce5eb0": {
+      "id": "u_1793556701207_e4ce5eb0",
+      "email": "alice@example.com",
+      "name": "Alice Wonderland",
+      "company": "Wonder Corp",
+      "passwordHash": "$2b$10$GPZt8WcYfhuCK0oJD7zlheFWzAqWEP612h5akbWOpq.3lh6zdM2bO",
+      "createdAt": "2026-11-01T18:11:41.312Z"
+    }
+  },
+  "sessions": {
+    "6a0b20e274c636e24b5c9b283b50fc0f5397286d768ee0ec233fa8453cf8687b": {
+      "userId": "user_demo_1",
+      "expiresAt": "2026-11-08T18:11:41.182Z"
+    },
+    "e5d30193c5e65b697465e7dd55e861fca944da17cecfb0513b3f385d99647768": {
+      "userId": "u_1793556701207_e4ce5eb0",
+      "expiresAt": "2026-11-08T18:11:49.788Z"
+    }
+  },
+  "resetTokens": {
+    "1A2FBB2A": {
+      "email": "thesoftwaredevelopmentcompany@gmail.com",
+      "userId": "user_demo_1",
+      "expiresAt": "2026-11-01T18:41:41.201Z"
+    }
+  },
+  "userData": {
+    "user_demo_1": {
+      "contacts": [
+        {
+          "id": "c-sample-1",
+          "name": "Aarav Sharma",
+          "phone": "919876543210",
+          "optedIn": true,
+          "createdAt": "2026-11-01T18:11:03.594Z"
+        },
+        {
+          "id": "c-sample-2",
+          "name": "Priya Verma",
+          "phone": "919876543211",
+          "optedIn": true,
+          "createdAt": "2026-11-01T18:11:03.594Z"
+        },
+        {
+          "id": "c-sample-3",
+          "name": "Rahul Singh",
+          "phone": "919876543212",
+          "optedIn": false,
+          "createdAt": "2026-11-01T18:11:03.594Z"
+        }
+      ],
+      "report": [],
+      "campaigns": [],
+      "waState": {
+        "status": "disconnected",
+        "qrDataUrl": null,
+        "message": "WhatsApp Web not connected. Click \"Generate QR Code\" to pair your device.",
+        "connectedPhone": null,
+        "lastSync": null
+      }
+    },
+    "u_1793556701207_e4ce5eb0": {
+      "contacts": [
+        {
+          "id": "c-1793556701345-14155550199",
+          "name": "Alice Friend",
+          "phone": "14155550199",
+          "optedIn": true,
+          "createdAt": "2026-11-01T18:11:41.345Z"
+        }
+      ],
+      "report": [
+        {
+          "id": "1793556711007-48c1c4c00b897",
+          "at": "2026-11-01T18:11:51.007Z",
+          "name": "Test Bob",
+          "phone": "14155550123",
+          "status": "Submitted",
+          "detail": "Message submitted via desk session for 14155550123."
+        }
+      ],
+      "campaigns": [],
+      "waState": {
+        "status": "connected",
+        "qrDataUrl": null,
+        "message": "WhatsApp Web session connected via 919876543210.",
+        "connectedPhone": "919876543210",
+        "lastSync": "2026-11-01T18:11:49.800Z"
+      }
+    }
+  }
+}

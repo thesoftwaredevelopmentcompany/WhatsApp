@@ -1,0 +1,2506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Broadcast Desk — Personal WhatsApp</title>
+  <meta name="description" content="Secure personal WhatsApp broadcast desk powered by Firebase with contact management, media attachments, campaign composer, and delivery reports.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #128c7e;
+      --primary-dark: #075e54;
+      --primary-light: #25d366;
+      --primary-soft: #e8f8f5;
+      --slate-900: #0b1320;
+      --slate-800: #152238;
+      --slate-700: #1f304d;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --card-bg: #ffffff;
+      --danger: #ef4444;
+      --danger-soft: #fee2e2;
+      --warning: #f59e0b;
+      --warning-soft: #fef3c7;
+      --success: #10b981;
+      --success-soft: #d1fae5;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden !important;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7fa;
+      color: #0f172a;
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+    input, button, select, textarea {
+      font-family: inherit;
+      max-width: 100%;
+    }
+
+    /* SHELL */
+    .app-shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: 100vh;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      min-width: 0;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--slate-900);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255, 255, 255, 0.07);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 30;
+    }
+    .sidebar-header {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 2px 10px rgba(37, 211, 102, 0.35);
+    }
+    .logo-sub {
+      font-size: 11px;
+      color: var(--slate-500);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+    .nav-list {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #f1f5f9;
+    }
+    .nav-item.active {
+      background: rgba(37, 211, 102, 0.12);
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.25);
+    }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .sidebar-user {
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .user-meta { min-width: 0; }
+    .user-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-email {
+      font-size: 11px;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    /* MAIN VIEW */
+    .main-area {
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .header-title-block {
+      min-width: 0;
+    }
+    .header-title-block h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-title-block .subtitle {
+      font-size: 12px;
+      color: var(--slate-500);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .wa-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .status-connected { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+    .status-qr, .status-connecting { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+    .status-disconnected { background: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+    .status-error { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+
+    /* CONTENT SECTIONS */
+    .view-content {
+      padding: 22px 28px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    .tab-section { display: none; width: 100%; min-width: 0; }
+    .tab-section.active { display: block; animation: fadeIn 0.15s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* METRICS STRIP */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .metric-card {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+    }
+    .metric-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-top: 4px;
+      letter-spacing: -0.03em;
+    }
+
+    /* CARDS */
+    .card {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 10px;
+      min-width: 0;
+    }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--slate-900); }
+    .card-desc { font-size: 12.5px; color: var(--slate-500); margin-top: 2px; }
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+      min-width: 0;
+      width: 100%;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--slate-300);
+      background: white;
+      color: var(--slate-800);
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+    .btn:hover { background: var(--slate-50); border-color: var(--slate-400); }
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(18, 140, 126, 0.25);
+    }
+    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-danger { background: white; border-color: #fecaca; color: var(--danger); }
+    .btn-danger:hover { background: var(--danger-soft); border-color: var(--danger); }
+    .btn-sm { padding: 5px 10px; font-size: 11.5px; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+    /* FORMS */
+    .form-group { margin-bottom: 14px; width: 100%; }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: 5px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--slate-900);
+      background: white;
+      outline: none;
+      transition: border-color 0.15s ease;
+      box-sizing: border-box;
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(18, 140, 126, 0.15);
+    }
+    textarea.form-input { resize: vertical; line-height: 1.5; }
+
+    /* MEDIA UPLOAD AREA & PASTE */
+    .media-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 16px 14px;
+      background: var(--slate-50);
+      transition: all 0.15s ease;
+      cursor: pointer;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+    .media-box:hover, .media-box.dragover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .media-preview-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .media-preview-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+    .media-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--slate-200);
+      flex-shrink: 0;
+    }
+    .media-doc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      background: var(--slate-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .media-meta-text {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+    #attachedMediaName {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--slate-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      display: block;
+    }
+
+    /* WHATSAPP PREVIEW CANVAS */
+    .wa-preview-canvas {
+      background: #ece5dd url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" opacity="0.06"><text x="10" y="30" font-size="20">💬</text></svg>') repeat;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .wa-bubble {
+      background: #dcf8c6;
+      border-radius: 12px 3px 12px 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #111827;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      position: relative;
+      max-width: 95%;
+      margin-left: auto;
+      word-break: break-word;
+      box-sizing: border-box;
+    }
+    .wa-bubble-media {
+      margin-bottom: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .wa-bubble-img {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+    .wa-bubble-doc {
+      background: #ffffff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .wa-bubble-time {
+      text-align: right;
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 4px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* TABLES */
+    .table-container {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      background: white;
+      margin-top: 14px;
+      box-sizing: border-box;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+    th {
+      background: var(--slate-50);
+      color: var(--slate-600);
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-200);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-200);
+      color: var(--slate-800);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafcff; }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-success { background: var(--success-soft); color: #065f46; }
+    .badge-warning { background: var(--warning-soft); color: #92400e; }
+    .badge-danger { background: var(--danger-soft); color: #991b1b; }
+    .badge-neutral { background: var(--slate-100); color: var(--slate-600); }
+
+    /* ACTION GROUPS */
+    .composer-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .contact-toolbar {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+    }
+    .contact-search-group {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
+    .contact-actions-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      z-index: 150;
+      box-sizing: border-box;
+    }
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 22px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      box-sizing: border-box;
+    }
+    .modal-header { margin-bottom: 16px; }
+    .modal-title { font-size: 17px; font-weight: 800; color: var(--slate-900); }
+    .modal-desc { font-size: 12.5px; color: var(--slate-500); margin-top: 3px; }
+
+    /* AUTH OVERLAY */
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0f172a;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      box-sizing: border-box;
+    }
+    .auth-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      max-width: 420px;
+      width: 100%;
+      padding: 28px 24px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      box-sizing: border-box;
+    }
+    .auth-tabs {
+      display: flex;
+      background: var(--slate-100);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+    }
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--slate-600);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .auth-tab.active { background: white; color: var(--slate-900); box-shadow: var(--shadow-sm); }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      bottom: 74px;
+      right: 16px;
+      left: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--slate-900);
+      color: white;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideUp 0.2s ease-out;
+      border-left: 4px solid var(--primary-light);
+      pointer-events: auto;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* MOBILE NAVIGATION BAR */
+    .mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100vw;
+      height: 60px;
+      background: #0b1320;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      z-index: 100;
+      justify-content: space-around;
+      align-items: center;
+      padding: 4px 6px;
+      box-sizing: border-box;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
+    }
+    .mobile-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      padding: 4px 2px;
+      cursor: pointer;
+      min-width: 0;
+    }
+    .mobile-nav-btn.active { color: var(--primary-light); }
+    .mobile-nav-btn span.icon { font-size: 17px; }
+
+    .hidden { display: none !important; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (max-width: 980px) {
+      .app-shell {
+        grid-template-columns: minmax(0, 1fr);
+        padding-bottom: 74px; /* Essential: space so fixed mobile bar never covers content! */
+      }
+      .sidebar { display: none !important; }
+      .mobile-bar { display: flex; }
+      .top-header { padding: 14px 18px; }
+      .view-content { padding: 16px; }
+      .grid-2col { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    }
+
+    @media (max-width: 600px) {
+      .view-content { padding: 10px; }
+      .card {
+        padding: 14px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+      }
+      .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .metric-card {
+        padding: 10px 12px;
+        border-radius: 10px;
+      }
+      .metric-label { font-size: 10px; }
+      .metric-value { font-size: 19px; margin-top: 2px; }
+
+      .top-header {
+        padding: 10px 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .header-title-block h1 { font-size: 17px; }
+      .header-title-block .subtitle { font-size: 11px; }
+      .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .wa-status-badge {
+        padding: 4px 10px;
+        font-size: 11px;
+      }
+
+      .composer-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .composer-actions .btn {
+        width: 100%;
+        white-space: normal;
+        text-align: center;
+      }
+
+      .contact-search-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      .contact-search-group .form-input,
+      .contact-search-group select {
+        width: 100% !important;
+      }
+      .contact-actions-group {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px !important;
+      }
+      .contact-actions-group .btn {
+        width: 100%;
+        font-size: 11px;
+        padding: 8px 4px;
+        text-align: center;
+      }
+
+      .media-preview-card {
+        padding: 6px 10px;
+      }
+      .media-thumb, .media-doc-icon {
+        width: 38px;
+        height: 38px;
+      }
+      #attachedMediaName {
+        max-width: 140px;
+      }
+
+      .wa-preview-canvas {
+        padding: 12px;
+        min-height: 180px;
+      }
+      .wa-bubble {
+        max-width: 100%;
+      }
+
+      .modal-content {
+        padding: 16px 14px;
+        border-radius: 14px;
+      }
+      .auth-card {
+        padding: 22px 16px;
+      }
+      .toast-container {
+        bottom: 68px;
+        left: 10px;
+        right: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FIREBASE AUTHENTICATION OVERLAY -->
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-card">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div class="logo-icon" style="width: 40px; height: 40px; margin: 0 auto 10px; font-size: 20px;">💬</div>
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-900);">Broadcast Desk</h2>
+        <p style="font-size: 12px; color: var(--slate-500); margin-top: 3px;">Personal WhatsApp Campaign Manager</p>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</div>
+        <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Register</div>
+        <div class="auth-tab" id="tabForgot" onclick="switchAuthTab('forgot')">Forgot Password</div>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="formLogin" onsubmit="window.doLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="you@domain.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <label class="form-label" style="margin-bottom:0">Password</label>
+            <a href="javascript:void(0)" onclick="switchAuthTab('forgot')" style="font-size: 11.5px; color: var(--primary); text-decoration: none; font-weight: 700;">Forgot Password?</a>
+          </div>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnLoginSubmit">Sign In with Firebase</button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="formRegister" class="hidden" onsubmit="window.doRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. John Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company / Workspace (Optional)</label>
+          <input type="text" id="regCompany" class="form-input" placeholder="e.g. Acme Corp">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="you@company.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password (Min 6 chars)</label>
+          <input type="password" id="regPassword" class="form-input" placeholder="Create secure password" minlength="6" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnRegSubmit">Create Firebase Account</button>
+      </form>
+
+      <!-- FORGOT PASSWORD FORM -->
+      <form id="formForgot" class="hidden" onsubmit="window.doForgot(event)">
+        <p style="font-size: 12px; color: var(--slate-600); margin-bottom: 14px; line-height: 1.5;">
+          Enter your registered email address. Firebase will send a secure password reset link to your inbox.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Registered Email</label>
+          <input type="email" id="forgotEmail" class="form-input" placeholder="you@domain.com" required autocomplete="email">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px;" id="btnForgotSubmit">Send Password Reset Email</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION SHELL -->
+  <div class="app-shell" id="appShell">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <div class="logo-icon">💬</div>
+          <div>Broadcast Desk</div>
+        </div>
+        <div class="logo-sub">Firebase + WhatsApp Web</div>
+      </div>
+
+      <nav class="nav-list">
+        <div class="nav-item active" onclick="switchTab('composer')">
+          <span class="nav-icon">✉️</span>
+          <span>Campaign Composer</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('connect')">
+          <span class="nav-icon">🔗</span>
+          <span>WhatsApp Connect</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('contacts')">
+          <span class="nav-icon">👥</span>
+          <span>Contact Manager</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('reports')">
+          <span class="nav-icon">📊</span>
+          <span>Send Reports</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')">
+          <span class="nav-icon">👤</span>
+          <span>User Profile</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="user-pill" onclick="switchTab('profile')" style="cursor: pointer;">
+          <div class="avatar" id="sideAvatar">..</div>
+          <div class="user-meta">
+            <div class="user-name" id="sideUserName">Loading…</div>
+            <div class="user-email" id="sideUserEmail">user@firebase</div>
+          </div>
+        </div>
+        <button class="btn-logout" title="Sign Out" onclick="window.doLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN INTERFACE -->
+    <main class="main-area">
+      <!-- TOP BAR -->
+      <header class="top-header">
+        <div class="header-title-block">
+          <h1 id="pageTitle">Campaign Composer</h1>
+          <div class="subtitle">
+            <span id="sessionDeskOwner">Desk for: Loading…</span>
+            <span>•</span>
+            <span id="devicePairingNote">Isolated Firestore Session</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div id="headerStatusPill" class="wa-status-badge status-disconnected" onclick="switchTab('connect')">
+            <span class="badge-dot"></span>
+            <span id="headerStatusText">DISCONNECTED</span>
+          </div>
+          <button class="btn btn-sm btn-primary" onclick="switchTab('composer')">+ New Campaign</button>
+        </div>
+      </header>
+
+      <!-- VIEW CONTENT CONTAINER -->
+      <div class="view-content">
+
+        <!-- 1. CAMPAIGN COMPOSER SECTION (With Add Media & Paste) -->
+        <section id="section-composer" class="tab-section active">
+          <!-- Metrics Strip -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Total Contacts</div>
+              <div class="metric-value" id="statTotalContacts">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Selected</div>
+              <div class="metric-value" id="statSelectedRecipients" style="color: var(--primary);">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Submitted</div>
+              <div class="metric-value" id="statSubmitted" style="color: #15803d;">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Failed</div>
+              <div class="metric-value" id="statFailed" style="color: #b91c1c;">0</div>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <!-- Left: Message Composition & Add Media -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Compose Campaign</h2>
+                  <p class="card-desc">Personalize text with <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">{{name}}</code> and attach images or documents.</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Campaign Reference (Optional)</label>
+                <input type="text" id="composerCampaignName" class="form-input" placeholder="e.g. Product Announcement">
+              </div>
+
+              <!-- Message Body -->
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                  <label class="form-label" style="margin-bottom:0">Message Body / Caption</label>
+                  <button type="button" class="btn btn-sm" style="padding: 2px 8px; font-size: 11px;" onclick="insertToken('{{name}}')">+ Insert {{name}}</button>
+                </div>
+                <textarea id="composerMessage" class="form-input" rows="5" placeholder="Hi {{name}},&#10;&#10;Here is the update we discussed. Let me know if you have any questions!"></textarea>
+                <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 11.5px; color: var(--slate-500);">
+                  <span>Plain text with emojis</span>
+                  <span id="composerCharCount">0 characters</span>
+                </div>
+              </div>
+
+              <!-- ADD MEDIA UPLOAD & PASTE AREA -->
+              <div class="form-group">
+                <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                  <span>Add Media (Image or Document)</span>
+                  <span style="font-size: 11px; font-weight: 500; color: var(--slate-500);">Paste supported (Ctrl+V)</span>
+                </label>
+
+                <!-- Media Dropzone / Upload Box -->
+                <div class="media-box" id="mediaDropzone" onclick="document.getElementById('mediaFileInput').click()">
+                  <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span style="font-size: 24px;">📎</span>
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 700; color: var(--slate-800);">Upload Image or Document</div>
+                      <div style="font-size: 11px; color: var(--slate-500); margin-top: 2px;">
+                        Click or drag & drop. Images or Docs (PDF, Word, CSV) up to 16MB.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <input type="file" id="mediaFileInput" accept="image/*,.pdf,.docx,.txt,.csv" class="hidden" onchange="window.handleMediaFileSelected(event)">
+
+                <!-- Attached Media Card -->
+                <div id="attachedMediaCard" class="media-preview-card hidden">
+                  <div class="media-preview-left">
+                    <img id="attachedMediaThumb" class="media-thumb hidden" alt="Thumb">
+                    <div id="attachedMediaDocIcon" class="media-doc-icon">📄</div>
+                    <div class="media-meta-text">
+                      <span id="attachedMediaName">filename.pdf</span>
+                      <div id="attachedMediaSize" style="font-size: 10.5px; color: var(--slate-500); margin-top: 1px;">240 KB</div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-danger" style="flex-shrink: 0;" onclick="window.removeAttachedMedia()">✕ Remove</button>
+                </div>
+              </div>
+
+              <!-- Policy notice -->
+              <div style="background: var(--warning-soft); border-left: 4px solid var(--warning); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-bottom: 16px;">
+                <b>Responsible Messaging:</b> Only message contacts who explicitly consented to receive WhatsApp communications from you.
+              </div>
+
+              <!-- Responsive Action buttons -->
+              <div class="composer-actions">
+                <button class="btn btn-primary" onclick="openReviewModal()">Review & Launch Batch →</button>
+                <button class="btn" onclick="switchTab('contacts')">Manage Selected (<span id="composerSelCount">0</span>)</button>
+              </div>
+            </div>
+
+            <!-- Right: Dynamic Live WhatsApp Preview -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h2 class="card-title">Live Preview</h2>
+                    <p class="card-desc">Sample preview for the first selected contact</p>
+                  </div>
+                  <span class="badge badge-neutral" id="previewRecipientBadge">No recipient</span>
+                </div>
+
+                <div class="wa-preview-canvas">
+                  <div class="wa-bubble">
+                    <!-- Media inside preview bubble -->
+                    <div id="previewMediaContainer" class="wa-bubble-media hidden">
+                      <img id="previewImageElement" class="wa-bubble-img hidden" alt="Media Preview">
+                      <div id="previewDocElement" class="wa-bubble-doc hidden">
+                        <span style="font-size: 22px;">📄</span>
+                        <div style="min-width: 0;">
+                          <div id="previewDocName" style="font-weight: 700; font-size: 12px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">document.pdf</div>
+                          <div id="previewDocSize" style="font-size: 10px; color: #64748b;">PDF • 240 KB</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Text caption inside bubble -->
+                    <div id="previewMessageText">Your message will appear here…</div>
+                    <div class="wa-bubble-time">
+                      <span>Just now</span>
+                      <span style="color: #38bdf8; font-weight: 800;">✓✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Launch Checklist -->
+                <div style="margin-top: 16px;">
+                  <div style="font-size: 11.5px; font-weight: 700; color: var(--slate-700); margin-bottom: 6px;">Launch Checklist</div>
+                  <div id="checklistItems" style="display: flex; flex-direction: column; gap: 5px; font-size: 11.5px;">
+                    <div id="chk-connected">○ WhatsApp Session Connected</div>
+                    <div id="chk-contacts">○ Contacts Loaded & Selected</div>
+                    <div id="chk-message">○ Message or Media Added</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. CONNECT SECTION -->
+        <section id="section-connect" class="tab-section">
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Personal WhatsApp Link</h2>
+                  <p class="card-desc">Link your phone using WhatsApp Web multi-device mode.</p>
+                </div>
+                <button class="btn btn-sm" onclick="window.fetchStatus()">Refresh Status</button>
+              </div>
+
+              <!-- QR Display Area -->
+              <div id="qrContainer" style="border: 2px dashed #cbd5e1; border-radius: var(--radius-lg); padding: 24px 14px; text-align: center; background: var(--slate-50); width: 100%; box-sizing: border-box; overflow: hidden;">
+                <div id="qrLoadingSpinner" style="display: inline-block; font-size: 30px; margin-bottom: 10px;">📱</div>
+                <div id="qrMessageTitle" style="font-size: 14.5px; font-weight: 700; color: var(--slate-800);">WhatsApp session not paired</div>
+                <p id="qrMessageDesc" style="font-size: 12.5px; color: var(--slate-500); max-width: 360px; margin: 6px auto 14px;">
+                  Click "Start Pairing" to generate your real WhatsApp Web QR code.
+                </p>
+                <img id="qrDisplayImage" alt="WhatsApp QR Code" class="hidden" style="width: 240px; max-width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 12px; margin: 0 auto; box-shadow: var(--shadow-md); border: 1px solid var(--slate-200);">
+              </div>
+
+              <!-- Connection Action Buttons -->
+              <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="btnPairWhatsApp" onclick="window.requestConnect()">Start Pairing / Generate QR</button>
+                <button class="btn btn-danger" id="btnDisconnectWhatsApp" onclick="window.requestDisconnect()">Disconnect Session</button>
+              </div>
+
+              <div style="margin-top: 20px; padding: 14px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 12px; color: var(--slate-600); line-height: 1.6;">
+                <b>Instructions:</b><br>
+                1. Open WhatsApp on your phone.<br>
+                2. Go to <b>Settings (or Menu ⋮) → Linked Devices → Link a Device</b>.<br>
+                3. Scan the QR code displayed above.<br>
+                4. Your session persists securely for your Firebase user account.
+              </div>
+            </div>
+
+            <!-- Session Details Card -->
+            <div class="card">
+              <h2 class="card-title" style="margin-bottom: 14px;">Session Diagnostics</h2>
+              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12.5px;">
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <span style="color: var(--slate-500);">Session Status</span>
+                  <b id="diagStatus">Disconnected</b>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <span style="color: var(--slate-500);">Connected Device</span>
+                  <b id="diagPhone">None</b>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <span style="color: var(--slate-500);">Storage & Auth</span>
+                  <b style="color: var(--primary);">Firebase Firestore</b>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <span style="color: var(--slate-500);">Last Sync</span>
+                  <b id="diagSync">Never</b>
+                </div>
+              </div>
+
+              <div style="margin-top: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: var(--radius-md); font-size: 11.5px; color: #166534;">
+                🔒 <b>Firebase Security Rules Active:</b> Access to your contacts, campaigns, and delivery reports is strictly restricted to your authenticated Firebase UID.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. CONTACT SECTION -->
+        <section id="section-contacts" class="tab-section">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Audience & Contact List</h2>
+                <p class="card-desc">Import CSV files with headers: <code class="mono">name, phone, opted_in</code> or add contacts individually.</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-sm btn-primary" onclick="openAddContactModal()">+ Add Contact</button>
+              </div>
+            </div>
+
+            <!-- Upload Zone -->
+            <label class="media-box" for="csvFileInput" style="display: block; text-align: center; padding: 22px 14px;">
+              <div style="font-size: 28px; color: var(--primary); margin-bottom: 6px;">📁</div>
+              <div style="font-size: 13.5px; font-weight: 700; color: var(--slate-800);">Upload Contacts CSV</div>
+              <div style="font-size: 11.5px; color: var(--slate-500); margin-top: 2px;">Click to browse, or drag & drop CSV file</div>
+            </label>
+            <input type="file" id="csvFileInput" accept=".csv,text/csv" class="hidden" onchange="window.handleCsvUpload(event)">
+
+            <!-- Mobile-Optimized Search & Filter Bar -->
+            <div class="contact-toolbar">
+              <div class="contact-search-group">
+                <input type="text" id="contactSearchInput" class="form-input" placeholder="Search name or phone…" style="flex: 1;" oninput="renderContactsTable()">
+                <select id="contactFilterSelect" class="form-input" style="width: 150px;" onchange="renderContactsTable()">
+                  <option value="all">All Contacts</option>
+                  <option value="selected">Selected Only</option>
+                  <option value="opted">Opted-In Only</option>
+                  <option value="unverified">Needs Consent</option>
+                </select>
+              </div>
+              <div class="contact-actions-group">
+                <button class="btn btn-sm" onclick="selectAllFiltered()">Select All</button>
+                <button class="btn btn-sm" onclick="clearSelected()">Clear</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteSelectedContacts()">Delete</button>
+              </div>
+            </div>
+
+            <div style="font-size: 11.5px; color: var(--slate-500); margin-top: 10px;" id="contactsCountSummary">
+              Showing 0 contacts
+            </div>
+
+            <!-- Contacts Table -->
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 40px; text-align: center;">
+                      <input type="checkbox" id="chkSelectAllRows" onchange="toggleSelectAllRows(event)">
+                    </th>
+                    <th>Name</th>
+                    <th>WhatsApp Phone</th>
+                    <th>Opt-In Status</th>
+                    <th>Added On</th>
+                    <th style="text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="contactsTableBody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; padding: 32px; color: var(--slate-500);">
+                      No contacts loaded yet. Upload a CSV file or add contacts to begin.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. SEND REPORTS SECTION -->
+        <section id="section-reports" class="tab-section">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Broadcast Activity Log</h2>
+                <p class="card-desc">Real-time log of dispatched campaign messages in your Firebase desk.</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-sm" onclick="exportReportCSV()">📥 Export CSV</button>
+                <button class="btn btn-sm btn-danger" onclick="window.clearReportsInFirestore()">Clear Log</button>
+              </div>
+            </div>
+
+            <div id="sendingNotice" class="hidden" style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 14px; border-radius: var(--radius-md); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 15px;">⏳</span>
+                <span style="font-size: 12px; font-weight: 600; color: #1e40af;">Campaign broadcast currently in progress…</span>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Recipient</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Media</th>
+                    <th>System Detail</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="reportsTableBody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; padding: 32px; color: var(--slate-500);">
+                      No broadcast logs recorded yet.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. USER PROFILE SECTION -->
+        <section id="section-profile" class="tab-section">
+          <div class="grid-2col">
+            <!-- Account Details -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Firebase Profile</h2>
+                  <p class="card-desc">Your personal account details stored in Firestore.</p>
+                </div>
+              </div>
+
+              <form onsubmit="window.saveUserProfile(event)">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" id="profileName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" id="profileEmail" class="form-input" disabled style="background: var(--slate-100); color: var(--slate-500);">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Company / Workspace</label>
+                  <input type="text" id="profileCompany" class="form-input" placeholder="e.g. Sales Team Alpha">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Firebase User UID</label>
+                  <input type="text" id="profileUid" class="form-input mono" disabled style="background: var(--slate-100); color: var(--slate-500);">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Profile Changes</button>
+              </form>
+            </div>
+
+            <!-- Security & Password -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h2 class="card-title">Password & Security</h2>
+                    <p class="card-desc">Request a password reset email via Firebase Auth.</p>
+                  </div>
+                </div>
+
+                <div style="font-size: 12.5px; color: var(--slate-600); margin-bottom: 14px;">
+                  Click below to send a secure password reset link to <b id="profileEmailBadge">your email</b>.
+                </div>
+                <button type="button" class="btn" style="width: 100%;" onclick="window.sendResetEmailCurrent()">Send Password Reset Email</button>
+              </div>
+
+              <!-- Session Info -->
+              <div class="card">
+                <h2 class="card-title" style="margin-bottom: 10px;">Active Firebase Session</h2>
+                <div style="background: var(--slate-50); padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 11.5px;">
+                  <div style="color: var(--slate-500); margin-bottom: 2px;">Authentication Provider:</div>
+                  <div class="mono" style="word-break: break-all; color: var(--slate-800);">Firebase Auth (Email / Password)</div>
+                </div>
+                <div style="margin-top: 14px;">
+                  <button class="btn btn-danger" style="width: 100%;" onclick="window.doLogout()">Sign Out of Broadcast Desk</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- FIXED MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bar" id="mobileNavBar">
+    <button class="mobile-nav-btn active" id="mob-composer" onclick="switchTab('composer')">
+      <span class="icon">✉️</span>
+      <span>Composer</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-connect" onclick="switchTab('connect')">
+      <span class="icon">🔗</span>
+      <span>Connect</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-contacts" onclick="switchTab('contacts')">
+      <span class="icon">👥</span>
+      <span>Contacts</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-reports" onclick="switchTab('reports')">
+      <span class="icon">📊</span>
+      <span>Reports</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-profile" onclick="switchTab('profile')">
+      <span class="icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- ADD CONTACT MODAL -->
+  <div id="addContactModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Contact</h3>
+        <p class="modal-desc">Add a recipient with country code (e.g. 14155552671 or 919876543210).</p>
+      </div>
+      <form onsubmit="window.handleAddContact(event)">
+        <div class="form-group">
+          <label class="form-label">Contact Name</label>
+          <input type="text" id="newContactName" class="form-input" placeholder="e.g. Maya Johnson" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number (With Country Code)</label>
+          <input type="tel" id="newContactPhone" class="form-input" placeholder="e.g. 14155552671" required>
+        </div>
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+            <input type="checkbox" id="newContactConsent" checked> Contact has explicitly opted in to receive messages
+          </label>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+          <button type="button" class="btn" onclick="closeAddContactModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add to Firestore</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CAMPAIGN REVIEW & CONSENT MODAL -->
+  <div id="reviewModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase;">Confirmation Step</div>
+        <h3 class="modal-title" style="margin-top: 4px;">Confirm WhatsApp Broadcast</h3>
+        <p class="modal-desc">Review your campaign details and attached media before sending.</p>
+      </div>
+
+      <div id="reviewSummaryDetails"></div>
+
+      <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 12px; margin: 14px 0;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 12px; line-height: 1.45; color: var(--slate-800); cursor: pointer;">
+          <input type="checkbox" id="reviewConsentCheckbox" style="margin-top: 3px;" onchange="toggleSendButton(this.checked)">
+          <span><b>I certify:</b> Every selected contact consented to receive WhatsApp communications from me.</span>
+        </label>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button class="btn" onclick="closeReviewModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmSend" disabled onclick="window.executeBatchSend()">Confirm & Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- FIREBASE CLIENT MODULE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      sendPasswordResetEmail,
+      signOut,
+      onAuthStateChanged,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      updateDoc,
+      deleteDoc,
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      addDoc,
+      getDocFromServer,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // Application state
+    let auth = null;
+    let db = null;
+    let currentUser = null;
+    let contactsList = [];
+    let selectedContactIds = new Set();
+    let reportsList = [];
+    let attachedMedia = null; // { base64, mimetype, filename, size, isImage }
+    let unsubscribeContacts = null;
+    let unsubscribeReports = null;
+
+    // Toast utility
+    window.showToast = function(message, isError = false) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      if (isError) toast.style.borderLeftColor = 'var(--danger)';
+      toast.innerHTML = `<span>${isError ? '⚠️' : '✓'}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.2s ease';
+        setTimeout(() => toast.remove(), 200);
+      }, 3500);
+    };
+
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    // Initialize Firebase SDK
+    async function initFirebase() {
+      try {
+        const res = await fetch('/api/firebase-config');
+        const config = await res.json();
+        const app = initializeApp(config);
+        auth = getAuth(app);
+        db = getFirestore(app, config.firestoreDatabaseId);
+
+        // Required connection test from Firebase Skill
+        try {
+          await getDocFromServer(doc(db, 'test', 'connection'));
+        } catch (error) {
+          if (error instanceof Error && error.message.includes('the client is offline')) {
+            console.warn("Please check your Firebase configuration / network.");
+          }
+        }
+
+        // Listen for Auth changes
+        onAuthStateChanged(auth, async user => {
+          if (user) {
+            currentUser = user;
+            document.getElementById('authOverlay').classList.add('hidden');
+            await loadUserProfile(user);
+            setupFirestoreListeners(user.uid);
+            window.fetchStatus();
+          } else {
+            currentUser = null;
+            if (unsubscribeContacts) unsubscribeContacts();
+            if (unsubscribeReports) unsubscribeReports();
+            document.getElementById('authOverlay').classList.remove('hidden');
+          }
+        });
+      } catch (err) {
+        console.error('Firebase initialization error:', err);
+        window.showToast('Firebase connection failed: ' + err.message, true);
+      }
+    }
+
+    // Load & Save User Profile in Firestore
+    async function loadUserProfile(user) {
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        let data = {};
+        if (snap.exists()) {
+          data = snap.data();
+        } else {
+          data = {
+            id: user.uid,
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            company: '',
+            createdAt: new Date().toISOString()
+          };
+          await setDoc(userRef, data);
+        }
+
+        const name = data.name || user.email.split('@')[0];
+        document.getElementById('sideUserName').textContent = name;
+        document.getElementById('sideUserEmail').textContent = user.email;
+        document.getElementById('sideAvatar').textContent = name.slice(0, 2).toUpperCase();
+        document.getElementById('sessionDeskOwner').textContent = `Desk for: ${name}`;
+
+        document.getElementById('profileName').value = name;
+        document.getElementById('profileEmail').value = user.email;
+        document.getElementById('profileCompany').value = data.company || '';
+        document.getElementById('profileUid').value = user.uid;
+        document.getElementById('profileEmailBadge').textContent = user.email;
+      } catch (e) {
+        console.error('Error loading profile:', e);
+      }
+    }
+
+    window.saveUserProfile = async function(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById('profileName').value.trim();
+      const company = document.getElementById('profileCompany').value.trim();
+      try {
+        await updateDoc(doc(db, 'users', currentUser.uid), { name, company });
+        await updateProfile(currentUser, { displayName: name });
+        await loadUserProfile(currentUser);
+        window.showToast('Profile updated in Firestore.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // Firebase Auth Actions
+    window.doLogin = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('btnLoginSubmit');
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.showToast('Signed in successfully.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In with Firebase';
+      }
+    };
+
+    window.doRegister = async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const company = document.getElementById('regCompany').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const btn = document.getElementById('btnRegSubmit');
+      btn.disabled = true;
+      btn.textContent = 'Creating account…';
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: name });
+        await setDoc(doc(db, 'users', cred.user.uid), {
+          id: cred.user.uid,
+          name,
+          email,
+          company,
+          createdAt: new Date().toISOString()
+        });
+        window.showToast('Firebase account created!');
+      } catch (err) {
+        window.showToast(err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Firebase Account';
+      }
+    };
+
+    window.doForgot = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value.trim();
+      const btn = document.getElementById('btnForgotSubmit');
+      btn.disabled = true;
+      btn.textContent = 'Sending email…';
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        window.showToast(`Password reset link sent to ${email}. Check your inbox!`);
+        switchAuthTab('login');
+      } catch (err) {
+        window.showToast(err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Password Reset Email';
+      }
+    };
+
+    window.sendResetEmailCurrent = async function() {
+      if (!currentUser || !currentUser.email) return;
+      try {
+        await sendPasswordResetEmail(auth, currentUser.email);
+        window.showToast(`Password reset link sent to ${currentUser.email}.`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.doLogout = async function() {
+      try {
+        await signOut(auth);
+        window.showToast('Signed out of Firebase.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // Setup Realtime Firestore Listeners
+    function setupFirestoreListeners(uid) {
+      // 1. Contacts Listener
+      const contactsCol = collection(db, 'users', uid, 'contacts');
+      unsubscribeContacts = onSnapshot(contactsCol, snap => {
+        contactsList = [];
+        snap.forEach(d => contactsList.push({ id: d.id, ...d.data() }));
+        if (selectedContactIds.size === 0 && contactsList.length > 0) {
+          contactsList.forEach(c => selectedContactIds.add(c.id));
+        }
+        renderContactsTable();
+        updateMetrics();
+      }, err => {
+        console.error('Contacts snapshot error:', err);
+      });
+
+      // 2. Reports Listener
+      const reportsCol = collection(db, 'users', uid, 'reports');
+      unsubscribeReports = onSnapshot(reportsCol, snap => {
+        reportsList = [];
+        snap.forEach(d => reportsList.push({ id: d.id, ...d.data() }));
+        reportsList.sort((a, b) => new Date(b.at || 0) - new Date(a.at || 0));
+        renderReportsTable();
+        updateMetrics();
+      }, err => {
+        console.error('Reports snapshot error:', err);
+      });
+    }
+
+    // Contacts Table Rendering
+    window.renderContactsTable = function() {
+      const tbody = document.getElementById('contactsTableBody');
+      const search = (document.getElementById('contactSearchInput')?.value || '').toLowerCase();
+      const filter = document.getElementById('contactFilterSelect')?.value || 'all';
+
+      const filtered = contactsList.filter(c => {
+        const matchesSearch = c.name?.toLowerCase().includes(search) || c.phone?.includes(search);
+        if (!matchesSearch) return false;
+        if (filter === 'selected') return selectedContactIds.has(c.id);
+        if (filter === 'opted') return c.optedIn;
+        if (filter === 'unverified') return !c.optedIn;
+        return true;
+      });
+
+      document.getElementById('contactsCountSummary').textContent =
+        `Showing ${filtered.length} of ${contactsList.length} contacts (${selectedContactIds.size} selected)`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--slate-500);">No matching contacts found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(c => `
+        <tr>
+          <td style="text-align: center;">
+            <input type="checkbox" ${selectedContactIds.has(c.id) ? 'checked' : ''} onchange="window.toggleSelectContact('${escapeHtml(c.id)}')">
+          </td>
+          <td><b>${escapeHtml(c.name)}</b></td>
+          <td class="mono">${escapeHtml(c.phone)}</td>
+          <td>
+            ${c.optedIn
+              ? '<span class="badge badge-success">✓ Opted-in</span>'
+              : '<span class="badge badge-warning">⚠️ Needs Consent</span>'}
+          </td>
+          <td style="color: var(--slate-500); font-size: 11px;">
+            ${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'N/A'}
+          </td>
+          <td style="text-align: right;">
+            <button class="btn btn-sm btn-danger" style="padding: 2px 7px; font-size: 11px;" onclick="window.deleteSingleContact('${escapeHtml(c.id)}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const chkAll = document.getElementById('chkSelectAllRows');
+      if (chkAll) chkAll.checked = filtered.length > 0 && filtered.every(c => selectedContactIds.has(c.id));
+
+      updateMetrics();
+      updatePreview();
+    };
+
+    window.toggleSelectContact = function(id) {
+      if (selectedContactIds.has(id)) {
+        selectedContactIds.delete(id);
+      } else {
+        selectedContactIds.add(id);
+      }
+      renderContactsTable();
+    };
+
+    window.toggleSelectAllRows = function(e) {
+      const search = (document.getElementById('contactSearchInput')?.value || '').toLowerCase();
+      const filter = document.getElementById('contactFilterSelect')?.value || 'all';
+      const filtered = contactsList.filter(c => {
+        const matchesSearch = c.name?.toLowerCase().includes(search) || c.phone?.includes(search);
+        if (!matchesSearch) return false;
+        if (filter === 'selected') return selectedContactIds.has(c.id);
+        if (filter === 'opted') return c.optedIn;
+        if (filter === 'unverified') return !c.optedIn;
+        return true;
+      });
+
+      if (e.target.checked) {
+        filtered.forEach(c => selectedContactIds.add(c.id));
+      } else {
+        filtered.forEach(c => selectedContactIds.delete(c.id));
+      }
+      renderContactsTable();
+    };
+
+    window.selectAllFiltered = function() {
+      contactsList.forEach(c => selectedContactIds.add(c.id));
+      renderContactsTable();
+      window.showToast(`Selected all ${contactsList.length} contacts.`);
+    };
+
+    window.clearSelected = function() {
+      selectedContactIds.clear();
+      renderContactsTable();
+    };
+
+    window.deleteSingleContact = async function(id) {
+      if (!currentUser) return;
+      try {
+        await deleteDoc(doc(db, 'users', currentUser.uid, 'contacts', id));
+        selectedContactIds.delete(id);
+        window.showToast('Contact deleted from Firestore.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.deleteSelectedContacts = async function() {
+      if (!currentUser || selectedContactIds.size === 0) return window.showToast('No contacts selected.', true);
+      const toDelete = Array.from(selectedContactIds);
+      try {
+        for (const id of toDelete) {
+          await deleteDoc(doc(db, 'users', currentUser.uid, 'contacts', id));
+          selectedContactIds.delete(id);
+        }
+        window.showToast(`Deleted ${toDelete.length} contacts.`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // Add Single Contact
+    window.handleAddContact = async function(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById('newContactName').value.trim();
+      const phone = document.getElementById('newContactPhone').value.replace(/\D/g, '');
+      const optedIn = document.getElementById('newContactConsent').checked;
+
+      if (!phone || phone.length < 8 || phone.length > 15) {
+        return window.showToast('Please enter an 8-15 digit phone number with country code.', true);
+      }
+
+      const id = `c_${Date.now()}_${phone}`;
+      const contactObj = {
+        id,
+        ownerId: currentUser.uid,
+        name,
+        phone,
+        optedIn,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await setDoc(doc(db, 'users', currentUser.uid, 'contacts', id), contactObj);
+        selectedContactIds.add(id);
+        closeAddContactModal();
+        window.showToast(`Added ${name} to Firestore.`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // CSV Contact Import (Bulk save to Firestore)
+    window.handleCsvUpload = async function(e) {
+      const file = e.target.files[0];
+      if (!file || !currentUser) return;
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        window.showToast('Parsing CSV…');
+        const token = await currentUser.getIdToken();
+        const res = await fetch('/api/contacts/parse-csv', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        window.showToast(`Saving ${data.count} contacts to Firestore…`);
+        for (const c of data.contacts) {
+          await setDoc(doc(db, 'users', currentUser.uid, 'contacts', c.id), c);
+          selectedContactIds.add(c.id);
+        }
+        window.showToast(`Imported ${data.count} contacts successfully!`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+      e.target.value = '';
+    };
+
+    // ==========================================
+    // MEDIA ATTACHMENTS & CLIPBOARD PASTE
+    // ==========================================
+    function setAttachedMedia(file, customFilename) {
+      if (file.size > 16 * 1024 * 1024) {
+        return window.showToast('Media file exceeds 16MB limit.', true);
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(',')[1];
+        const isImage = file.type.startsWith('image/');
+        attachedMedia = {
+          base64,
+          mimetype: file.type || (isImage ? 'image/png' : 'application/octet-stream'),
+          filename: customFilename || file.name || (isImage ? 'pasted-image.png' : 'document.pdf'),
+          size: file.size,
+          isImage
+        };
+
+        // Render attachment card
+        const card = document.getElementById('attachedMediaCard');
+        const thumb = document.getElementById('attachedMediaThumb');
+        const docIcon = document.getElementById('attachedMediaDocIcon');
+        const nameEl = document.getElementById('attachedMediaName');
+        const sizeEl = document.getElementById('attachedMediaSize');
+
+        nameEl.textContent = attachedMedia.filename;
+        sizeEl.textContent = formatBytes(attachedMedia.size);
+
+        if (isImage) {
+          thumb.src = reader.result;
+          thumb.classList.remove('hidden');
+          docIcon.classList.add('hidden');
+        } else {
+          thumb.classList.add('hidden');
+          docIcon.classList.remove('hidden');
+        }
+        card.classList.remove('hidden');
+
+        updatePreview();
+        window.showToast(`Attached ${attachedMedia.filename}`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.handleMediaFileSelected = function(e) {
+      const file = e.target.files[0];
+      if (file) setAttachedMedia(file);
+      e.target.value = '';
+    };
+
+    window.removeAttachedMedia = function() {
+      attachedMedia = null;
+      document.getElementById('attachedMediaCard').classList.add('hidden');
+      updatePreview();
+      window.showToast('Attachment removed.');
+    };
+
+    // Clipboard Paste Listener
+    window.addEventListener('paste', e => {
+      const items = (e.clipboardData || e.originalEvent.clipboardData)?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.indexOf('image') !== -1) {
+          const blob = item.getAsFile();
+          if (blob) {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            setAttachedMedia(blob, `pasted-image-${timestamp}.png`);
+            break;
+          }
+        }
+      }
+    });
+
+    // Drag and Drop for Media
+    const dropzone = document.getElementById('mediaDropzone');
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, e => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+    });
+    dropzone.addEventListener('drop', e => {
+      const file = e.dataTransfer.files[0];
+      if (file) setAttachedMedia(file);
+    });
+
+    // Update Live WhatsApp Preview
+    function updatePreview() {
+      const message = document.getElementById('composerMessage')?.value || '';
+      document.getElementById('composerCharCount').textContent = `${message.length} characters`;
+
+      const firstSelected = contactsList.find(c => selectedContactIds.has(c.id)) || contactsList[0];
+      const previewText = message ? message.replace(/\{\{\s*name\s*\}\}/gi, firstSelected ? firstSelected.name : 'there') : (attachedMedia ? '' : 'Your message will appear here…');
+      document.getElementById('previewMessageText').textContent = previewText;
+
+      const badge = document.getElementById('previewRecipientBadge');
+      if (firstSelected) {
+        badge.textContent = `To: ${firstSelected.name} (${firstSelected.phone})`;
+      } else {
+        badge.textContent = 'No recipient selected';
+      }
+
+      // Preview Media Container
+      const mediaContainer = document.getElementById('previewMediaContainer');
+      const previewImg = document.getElementById('previewImageElement');
+      const previewDoc = document.getElementById('previewDocElement');
+
+      if (attachedMedia) {
+        mediaContainer.classList.remove('hidden');
+        if (attachedMedia.isImage) {
+          previewImg.src = `data:${attachedMedia.mimetype};base64,${attachedMedia.base64}`;
+          previewImg.classList.remove('hidden');
+          previewDoc.classList.add('hidden');
+        } else {
+          previewImg.classList.add('hidden');
+          previewDoc.classList.remove('hidden');
+          document.getElementById('previewDocName').textContent = attachedMedia.filename;
+          document.getElementById('previewDocSize').textContent = `${attachedMedia.mimetype.split('/')[1]?.toUpperCase() || 'FILE'} • ${formatBytes(attachedMedia.size)}`;
+        }
+      } else {
+        mediaContainer.classList.add('hidden');
+        previewImg.classList.add('hidden');
+        previewDoc.classList.add('hidden');
+      }
+
+      // Checklist Status
+      const chkMsg = document.getElementById('chk-message');
+      if (message.trim().length > 0 || attachedMedia) {
+        chkMsg.textContent = attachedMedia ? '✓ Message / Media Attached' : '✓ Message Written';
+        chkMsg.style.color = '#15803d';
+      } else {
+        chkMsg.textContent = '○ Add Message or Media';
+        chkMsg.style.color = 'var(--slate-500)';
+      }
+
+      const chkContacts = document.getElementById('chk-contacts');
+      if (selectedContactIds.size > 0) {
+        chkContacts.textContent = `✓ ${selectedContactIds.size} Recipient(s) Selected`;
+        chkContacts.style.color = '#15803d';
+      } else {
+        chkContacts.textContent = '○ Select Recipients';
+        chkContacts.style.color = 'var(--slate-500)';
+      }
+    }
+
+    document.getElementById('composerMessage').addEventListener('input', updatePreview);
+
+    function updateMetrics() {
+      document.getElementById('statTotalContacts').textContent = contactsList.length;
+      document.getElementById('statSelectedRecipients').textContent = selectedContactIds.size;
+      document.getElementById('composerSelCount').textContent = selectedContactIds.size;
+    }
+
+    // Review & Send Modal
+    let pendingBatch = null;
+    window.openReviewModal = function() {
+      const message = document.getElementById('composerMessage').value.trim();
+      if (!message && !attachedMedia) {
+        return window.showToast('Please write a message or attach media before reviewing.', true);
+      }
+      if (selectedContactIds.size === 0) {
+        return window.showToast('Please select at least one contact.', true);
+      }
+
+      const selectedList = contactsList.filter(c => selectedContactIds.has(c.id));
+      const unverifiedCount = selectedList.filter(c => !c.optedIn).length;
+      const campaignName = document.getElementById('composerCampaignName').value.trim() || 'Untitled Broadcast';
+
+      pendingBatch = { campaignName, contacts: selectedList, message, media: attachedMedia };
+
+      const container = document.getElementById('reviewSummaryDetails');
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+          <div style="background: var(--slate-50); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
+            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase;">Campaign Name</div>
+            <b style="font-size: 13px; color: var(--slate-900); word-break: break-all;">${escapeHtml(campaignName)}</b>
+          </div>
+          <div style="background: var(--slate-50); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
+            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase;">Total Recipients</div>
+            <b style="font-size: 13px; color: var(--primary);">${selectedList.length} Contacts</b>
+          </div>
+        </div>
+
+        ${attachedMedia ? `
+          <div style="background: var(--primary-soft); border: 1px solid #bbf7d0; padding: 8px 12px; border-radius: var(--radius-md); font-size: 12px; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">📎</span>
+            <span style="word-break: break-all;">Attached Media: <b>${escapeHtml(attachedMedia.filename)}</b> (${formatBytes(attachedMedia.size)})</span>
+          </div>
+        ` : ''}
+
+        <div style="font-size: 12px; font-weight: 700; color: var(--slate-700); margin-bottom: 5px;">Recipients (${selectedList.length})</div>
+        <div style="max-height: 100px; overflow-y: auto; border: 1px solid var(--slate-200); border-radius: var(--radius-md); margin-bottom: 12px;">
+          ${selectedList.slice(0, 10).map(c => `
+            <div style="padding: 5px 8px; border-bottom: 1px solid var(--slate-100); font-size: 11.5px; display: flex; justify-content: space-between;">
+              <span><b>${escapeHtml(c.name)}</b> (${escapeHtml(c.phone)})</span>
+              ${c.optedIn ? '<span style="color: #15803d; font-size: 10.5px;">Opted In</span>' : '<span style="color: #b45309; font-size: 10.5px;">Unverified</span>'}
+            </div>
+          `).join('')}
+          ${selectedList.length > 10 ? `<div style="padding: 5px 8px; font-size: 10.5px; color: var(--slate-500);">...and ${selectedList.length - 10} more</div>` : ''}
+        </div>
+
+        ${unverifiedCount > 0 ? `
+          <div style="background: var(--warning-soft); border-left: 4px solid var(--warning); padding: 8px 10px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-top: 10px;">
+            ⚠️ <b>Notice:</b> ${unverifiedCount} contact(s) lack an explicit opt-in confirmation. Please ensure consent before sending.
+          </div>
+        ` : ''}
+      `;
+
+      document.getElementById('reviewConsentCheckbox').checked = false;
+      document.getElementById('btnConfirmSend').disabled = true;
+      document.getElementById('reviewModal').classList.remove('hidden');
+    };
+
+    window.closeReviewModal = function() {
+      document.getElementById('reviewModal').classList.add('hidden');
+    };
+
+    window.toggleSendButton = function(checked) {
+      document.getElementById('btnConfirmSend').disabled = !checked;
+    };
+
+    // Execute Batch Broadcast
+    window.executeBatchSend = async function() {
+      if (!pendingBatch || !currentUser) return;
+      const btn = document.getElementById('btnConfirmSend');
+      btn.disabled = true;
+      btn.textContent = 'Submitting Batch…';
+
+      try {
+        const token = await currentUser.getIdToken();
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            contacts: pendingBatch.contacts.map(c => ({ name: c.name, phone: c.phone })),
+            message: pendingBatch.message,
+            confirmed: true,
+            media: pendingBatch.media
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Record Campaign in Firestore
+        const campRef = doc(collection(db, 'users', currentUser.uid, 'campaigns'));
+        await setDoc(campRef, {
+          id: campRef.id,
+          ownerId: currentUser.uid,
+          title: pendingBatch.campaignName,
+          message: pendingBatch.message,
+          hasMedia: Boolean(pendingBatch.media),
+          mediaName: pendingBatch.media?.filename || '',
+          mediaMime: pendingBatch.media?.mimetype || '',
+          recipientCount: pendingBatch.contacts.length,
+          createdAt: new Date().toISOString()
+        });
+
+        // Record initial submitted logs in Firestore
+        for (const c of pendingBatch.contacts) {
+          const reportRef = doc(collection(db, 'users', currentUser.uid, 'reports'));
+          await setDoc(reportRef, {
+            id: reportRef.id,
+            ownerId: currentUser.uid,
+            name: c.name,
+            phone: c.phone,
+            status: 'Submitted',
+            detail: pendingBatch.media ? `Queued message with media (${pendingBatch.media.filename})` : 'Queued for WhatsApp Web dispatch',
+            hasMedia: Boolean(pendingBatch.media),
+            at: new Date().toISOString()
+          });
+        }
+
+        closeReviewModal();
+        window.showToast('Broadcast batch launched! Monitoring reports…');
+        switchTab('reports');
+      } catch (err) {
+        window.showToast(err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Confirm & Send Now';
+      }
+    };
+
+    // Reports Table
+    function renderReportsTable() {
+      const tbody = document.getElementById('reportsTableBody');
+      const submitted = reportsList.filter(r => r.status === 'Submitted').length;
+      const failed = reportsList.filter(r => r.status === 'Failed').length;
+
+      document.getElementById('statSubmitted').textContent = submitted;
+      document.getElementById('statFailed').textContent = failed;
+
+      if (reportsList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--slate-500);">No broadcast logs recorded yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = reportsList.map(r => `
+        <tr>
+          <td><b>${escapeHtml(r.name)}</b></td>
+          <td class="mono">${escapeHtml(r.phone)}</td>
+          <td>
+            <span class="badge ${r.status === 'Submitted' ? 'badge-success' : 'badge-danger'}">
+              ${escapeHtml(r.status)}
+            </span>
+          </td>
+          <td>
+            ${r.hasMedia ? '<span class="badge badge-neutral">📎 Media</span>' : '<span style="color: #94a3b8; font-size: 11px;">None</span>'}
+          </td>
+          <td style="font-size: 11.5px; color: var(--slate-600); max-width: 260px; white-space: normal;">
+            ${escapeHtml(r.detail)}
+          </td>
+          <td style="color: var(--slate-500); font-size: 11px;">
+            ${r.at ? new Date(r.at).toLocaleTimeString() : 'N/A'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.clearReportsInFirestore = async function() {
+      if (!currentUser || reportsList.length === 0) return;
+      if (!confirm('Clear all report entries from Firestore?')) return;
+      try {
+        for (const r of reportsList) {
+          await deleteDoc(doc(db, 'users', currentUser.uid, 'reports', r.id));
+        }
+        window.showToast('Reports cleared.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.exportReportCSV = function() {
+      if (reportsList.length === 0) return window.showToast('No report data to export.', true);
+      const rows = [
+        ['Name', 'Phone', 'Status', 'Media', 'Detail', 'Time'],
+        ...reportsList.map(r => [r.name, r.phone, r.status, r.hasMedia ? 'Yes' : 'No', r.detail, r.at])
+      ];
+      const csv = rows.map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `whatsapp-broadcast-report-${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      window.showToast('Exported report CSV.');
+    };
+
+    // Real WhatsApp Session API Calls
+    window.fetchStatus = async function() {
+      if (!currentUser) return;
+      try {
+        const token = await currentUser.getIdToken();
+        const res = await fetch('/api/status', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        updateStatusUI(data);
+      } catch (e) {}
+    };
+
+    function updateStatusUI(data) {
+      const pill = document.getElementById('headerStatusPill');
+      const text = document.getElementById('headerStatusText');
+      const diagStatus = document.getElementById('diagStatus');
+      const diagPhone = document.getElementById('diagPhone');
+      const diagSync = document.getElementById('diagSync');
+      const qrImg = document.getElementById('qrDisplayImage');
+      const qrTitle = document.getElementById('qrMessageTitle');
+      const qrDesc = document.getElementById('qrMessageDesc');
+      const chkConn = document.getElementById('chk-connected');
+
+      pill.className = 'wa-status-badge';
+      diagStatus.textContent = data.status.toUpperCase();
+      diagPhone.textContent = data.connectedPhone || 'None';
+      diagSync.textContent = data.lastSync ? new Date(data.lastSync).toLocaleTimeString() : 'Never';
+
+      if (data.connected) {
+        pill.classList.add('status-connected');
+        text.textContent = 'CONNECTED';
+        qrImg.classList.add('hidden');
+        qrTitle.textContent = `Connected: ${data.connectedPhone || 'WhatsApp Web'}`;
+        qrDesc.textContent = 'Your session is active and ready to broadcast.';
+        chkConn.textContent = '✓ WhatsApp Session Connected';
+        chkConn.style.color = '#15803d';
+      } else if (data.status === 'qr' && data.qrDataUrl) {
+        pill.classList.add('status-qr');
+        text.textContent = 'SCAN QR';
+        qrImg.src = data.qrDataUrl;
+        qrImg.classList.remove('hidden');
+        qrTitle.textContent = 'Scan with WhatsApp on your phone';
+        qrDesc.textContent = 'Open WhatsApp → Linked Devices → Link a Device and point your camera here.';
+        chkConn.textContent = '○ Scan WhatsApp QR Code';
+        chkConn.style.color = '#b45309';
+      } else if (data.status === 'starting' || data.status === 'connecting') {
+        pill.classList.add('status-connecting');
+        text.textContent = 'CONNECTING…';
+        qrImg.classList.add('hidden');
+        qrTitle.textContent = 'Starting WhatsApp Web…';
+        qrDesc.textContent = data.message || 'Connecting to WhatsApp servers…';
+        chkConn.textContent = '○ Connecting WhatsApp…';
+        chkConn.style.color = '#b45309';
+      } else {
+        pill.classList.add('status-disconnected');
+        text.textContent = 'DISCONNECTED';
+        qrImg.classList.add('hidden');
+        qrTitle.textContent = 'WhatsApp Web Disconnected';
+        qrDesc.textContent = data.message || 'Click "Start Pairing" to link your WhatsApp session.';
+        chkConn.textContent = '○ WhatsApp Session Disconnected';
+        chkConn.style.color = 'var(--slate-500)';
+      }
+    }
+
+    window.requestConnect = async function() {
+      if (!currentUser) return;
+      try {
+        window.showToast('Initiating WhatsApp pairing…');
+        const token = await currentUser.getIdToken();
+        await fetch('/api/whatsapp/connect', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setTimeout(window.fetchStatus, 1500);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.requestDisconnect = async function() {
+      if (!currentUser) return;
+      try {
+        const token = await currentUser.getIdToken();
+        await fetch('/api/whatsapp/disconnect', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        window.showToast('WhatsApp session disconnected.');
+        window.fetchStatus();
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // Polling WhatsApp status periodically
+    setInterval(() => {
+      if (currentUser) window.fetchStatus();
+    }, 6000);
+
+    // Run Firebase Init
+    initFirebase();
+  </script>
+
+  <script>
+    // Tab switching & Modal helpers
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
+      const activeSec = document.getElementById(`section-${tabId}`);
+      if (activeSec) activeSec.classList.add('active');
+
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.mobile-nav-btn').forEach(el => el.classList.remove('active'));
+
+      const titles = {
+        composer: 'Campaign Composer',
+        connect: 'WhatsApp Connect',
+        contacts: 'Contact Manager',
+        reports: 'Send Reports',
+        profile: 'User Profile & Security'
+      };
+      document.getElementById('pageTitle').textContent = titles[tabId] || 'Broadcast Desk';
+
+      const navItems = document.querySelectorAll('.nav-item');
+      const mapping = ['composer', 'connect', 'contacts', 'reports', 'profile'];
+      const idx = mapping.indexOf(tabId);
+      if (idx !== -1 && navItems[idx]) navItems[idx].classList.add('active');
+
+      const mobBtn = document.getElementById(`mob-${tabId}`);
+      if (mobBtn) mobBtn.classList.add('active');
+
+      // Scroll to top of content on mobile tab change
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchAuthTab(type) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('formLogin').classList.add('hidden');
+      document.getElementById('formRegister').classList.add('hidden');
+      document.getElementById('formForgot').classList.add('hidden');
+
+      if (type === 'login') {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('formLogin').classList.remove('hidden');
+      } else if (type === 'register') {
+        document.getElementById('tabRegister').classList.add('active');
+        document.getElementById('formRegister').classList.remove('hidden');
+      } else if (type === 'forgot') {
+        document.getElementById('tabForgot').classList.add('active');
+        document.getElementById('formForgot').classList.remove('hidden');
+      }
+    }
+
+    function openAddContactModal() {
+      document.getElementById('newContactName').value = '';
+      document.getElementById('newContactPhone').value = '';
+      document.getElementById('newContactConsent').checked = true;
+      document.getElementById('addContactModal').classList.remove('hidden');
+    }
+    function closeAddContactModal() {
+      document.getElementById('addContactModal').classList.add('hidden');
+    }
+
+    function insertToken(token) {
+      const txt = document.getElementById('composerMessage');
+      const start = txt.selectionStart;
+      const end = txt.selectionEnd;
+      txt.value = txt.value.substring(0, start) + token + txt.value.substring(end);
+      txt.focus();
+      txt.selectionStart = txt.selectionEnd = start + token.length;
+      txt.dispatchEvent(new Event('input'));
+    }
+  </script>
+</body>
+</html>

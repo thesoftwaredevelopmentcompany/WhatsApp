@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with organization and settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "company": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "createdAt"]
+    },
+    "Contact": {
+      "title": "Contact",
+      "description": "Recipient contact stored in user's isolated desk",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "optedIn": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "phone", "optedIn", "createdAt"]
+    },
+    "Campaign": {
+      "title": "Campaign",
+      "description": "Broadcast campaign record with optional media attachment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "hasMedia": { "type": "boolean" },
+        "mediaName": { "type": "string" },
+        "mediaMime": { "type": "string" },
+        "recipientCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "message", "hasMedia", "recipientCount", "createdAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Per-recipient delivery log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "status": { "type": "string" },
+        "detail": { "type": "string" },
+        "hasMedia": { "type": "boolean" },
+        "at": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "phone", "status", "at"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile document"
+    },
+    "/users/{userId}/contacts/{contactId}": {
+      "schema": "Contact",
+      "description": "User's isolated contact list"
+    },
+    "/users/{userId}/campaigns/{campaignId}": {
+      "schema": "Campaign",
+      "description": "User's campaign history"
+    },
+    "/users/{userId}/reports/{reportId}": {
+      "schema": "Report",
+      "description": "User's dispatch log"
+    }
+  }
+}

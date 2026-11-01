@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User profile document
+    match /users/{userId} {
+      allow get: if isValidId(userId) && isOwner(userId);
+      allow create: if isValidId(userId) && isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isValidId(userId) && isOwner(userId) && request.resource.data.id == userId;
+      allow delete: if isValidId(userId) && isOwner(userId);
+
+      // Isolated user contacts
+      match /contacts/{contactId} {
+        allow get, delete: if isValidId(userId) && isValidId(contactId) && isOwner(userId);
+        allow list: if isValidId(userId) && isOwner(userId);
+        allow create: if isValidId(userId) && isValidId(contactId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+        allow update: if isValidId(userId) && isValidId(contactId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+      }
+
+      // Isolated user campaigns
+      match /campaigns/{campaignId} {
+        allow get, delete: if isValidId(userId) && isValidId(campaignId) && isOwner(userId);
+        allow list: if isValidId(userId) && isOwner(userId);
+        allow create: if isValidId(userId) && isValidId(campaignId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+        allow update: if isValidId(userId) && isValidId(campaignId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+      }
+
+      // Isolated user broadcast reports
+      match /reports/{reportId} {
+        allow get, delete: if isValidId(userId) && isValidId(reportId) && isOwner(userId);
+        allow list: if isValidId(userId) && isOwner(userId);
+        allow create: if isValidId(userId) && isValidId(reportId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+        allow update: if isValidId(userId) && isValidId(reportId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+      }
+    }
+  }
+}
