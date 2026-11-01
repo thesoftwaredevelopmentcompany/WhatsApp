@@ -32,7 +32,7 @@ try {
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 8080);
 const HOST = process.env.HOST || '0.0.0.0';
 
 // Allow media payloads up to 25MB
@@ -431,6 +431,11 @@ app.post('/api/send', authMiddleware, async (req, res) => {
 
 // App status
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+
+// Fallback all other GET routes to index.html for SPA support
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.listen(PORT, HOST, () => {
   console.log(`Broadcast Desk running on http://${HOST}:${PORT}`);
