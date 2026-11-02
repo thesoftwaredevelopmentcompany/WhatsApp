@@ -4,73 +4,115 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>WhatsApp Personal Broadcast Desk</title>
-  <meta name="description" content="Secure multi-user dashboard for personal WhatsApp broadcasts with email authentication, contact management, campaign composer, and delivery reports.">
+  <meta name="description" content="Professional multi-user dashboard for personal WhatsApp broadcasts with Firebase authentication, contact segmentation, campaign composer, and delivery reports.">
   <meta property="og:title" content="WhatsApp Personal Broadcast Desk">
-  <meta property="og:description" content="Secure multi-user dashboard for personal WhatsApp broadcasts with email authentication, contact management, campaign composer, and delivery reports.">
+  <meta property="og:description" content="Professional multi-user dashboard for personal WhatsApp broadcasts with Firebase authentication, contact segmentation, campaign composer, and delivery reports.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #128c7e;
-      --primary-dark: #075e54;
-      --primary-light: #25d366;
-      --primary-soft: #e8f8f5;
-      --slate-900: #0b1320;
-      --slate-800: #152238;
-      --slate-700: #1f304d;
-      --slate-600: #475569;
-      --slate-500: #64748b;
-      --slate-300: #cbd5e1;
-      --slate-200: #e2e8f0;
-      --slate-100: #f1f5f9;
-      --slate-50: #f8fafc;
-      --card-bg: #ffffff;
-      --danger: #ef4444;
-      --danger-soft: #fee2e2;
+      --wa-teal: #008069;
+      --wa-teal-dark: #006853;
+      --wa-teal-light: #00a884;
+      --wa-green: #25d366;
+      --wa-bg: #f0f2f5;
+      --wa-bubble-sent: #d9fdd3;
+      --wa-bubble-recv: #ffffff;
+      --wa-ticks: #53bdeb;
+      --slate-900: #111b21;
+      --slate-850: #182229;
+      --slate-800: #202c33;
+      --slate-700: #3b4a54;
+      --slate-600: #54656f;
+      --slate-500: #667781;
+      --slate-400: #8696a0;
+      --slate-300: #d1d7db;
+      --slate-200: #e9edef;
+      --slate-100: #f0f2f5;
+      --slate-50: #f7f9fa;
+      --danger: #ea3943;
+      --danger-soft: #fde8e8;
       --warning: #f59e0b;
       --warning-soft: #fef3c7;
-      --success: #10b981;
-      --success-soft: #d1fae5;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-xl: 24px;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-      --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+      --success: #00a884;
+      --success-soft: #e7f7ef;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-sm: 0 1px 2px rgba(11, 20, 26, 0.06);
+      --shadow-md: 0 4px 12px rgba(11, 20, 26, 0.08);
+      --shadow-lg: 0 12px 28px rgba(11, 20, 26, 0.12);
     }
+
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    html {
+
+    html, body {
       width: 100%;
       max-width: 100%;
       overflow-x: hidden !important;
+      touch-action: pan-y;
       -webkit-text-size-adjust: 100%;
-    }
-    body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden !important;
-      position: relative;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f7fa;
-      color: #0f172a;
+      background-color: var(--wa-bg);
+      color: var(--slate-900);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 13.5px;
       line-height: 1.5;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--slate-300);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--slate-400);
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--slate-300) transparent;
+    }
+
     input, button, select, textarea {
       font-family: inherit;
       max-width: 100%;
       box-sizing: border-box;
     }
 
-    /* SHELL */
+    /* SVG Icon Helper Style */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: middle;
+    }
+    .icon-sm { width: 14px; height: 14px; stroke-width: 2; }
+    .icon-lg { width: 22px; height: 22px; stroke-width: 2; }
+    .icon-filled { fill: currentColor; stroke: none; }
+
+    /* APP SHELL */
     .app-shell {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
@@ -82,20 +124,21 @@
       box-sizing: border-box;
     }
 
-    /* SIDEBAR */
+    /* DESKTOP SIDEBAR */
     .sidebar {
       background: var(--slate-900);
-      color: #e2e8f0;
+      color: #e9edef;
       display: flex;
       flex-direction: column;
-      border-right: 1px solid rgba(255, 255, 255, 0.07);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
       position: sticky;
       top: 0;
       height: 100vh;
       z-index: 30;
+      user-select: none;
     }
     .sidebar-header {
-      padding: 24px 20px 20px;
+      padding: 20px 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .logo-badge {
@@ -103,7 +146,7 @@
       align-items: center;
       gap: 10px;
       font-weight: 800;
-      font-size: 18px;
+      font-size: 17px;
       color: #ffffff;
       letter-spacing: -0.02em;
     }
@@ -111,27 +154,27 @@
       width: 32px;
       height: 32px;
       border-radius: 9px;
-      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      background: var(--wa-teal-light);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 16px;
-      box-shadow: 0 2px 10px rgba(37, 211, 102, 0.35);
+      box-shadow: 0 2px 10px rgba(0, 168, 132, 0.35);
+      flex-shrink: 0;
     }
     .logo-sub {
       font-size: 11px;
-      color: var(--slate-500);
+      color: var(--slate-400);
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
       margin-top: 4px;
+      letter-spacing: 0.02em;
     }
+
     .nav-list {
-      padding: 16px 12px;
+      padding: 16px 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       flex: 1;
       overflow-y: auto;
     }
@@ -139,29 +182,35 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 14px;
+      padding: 10px 14px;
       border-radius: var(--radius-md);
-      color: #94a3b8;
+      color: var(--slate-400);
       font-weight: 600;
       font-size: 13.5px;
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.15s ease;
-      user-select: none;
+      white-space: nowrap;
     }
     .nav-item:hover {
       background: rgba(255, 255, 255, 0.05);
-      color: #f1f5f9;
+      color: #ffffff;
     }
     .nav-item.active {
-      background: rgba(37, 211, 102, 0.12);
-      color: #4ade80;
-      border-color: rgba(74, 222, 128, 0.25);
+      background: rgba(0, 168, 132, 0.15);
+      color: var(--wa-teal-light);
+      border-color: rgba(0, 168, 132, 0.25);
     }
-    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: inherit;
+    }
+
     .sidebar-user {
-      padding: 16px;
-      background: rgba(0, 0, 0, 0.25);
+      padding: 14px 16px;
+      background: var(--slate-850);
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
@@ -173,12 +222,13 @@
       align-items: center;
       gap: 10px;
       min-width: 0;
+      cursor: pointer;
     }
     .avatar {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #10b981, #047857);
+      background: var(--wa-teal);
       color: white;
       font-weight: 700;
       font-size: 13px;
@@ -186,38 +236,43 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      letter-spacing: -0.02em;
     }
     .user-meta { min-width: 0; }
     .user-name {
       font-size: 13px;
       font-weight: 700;
-      color: #f8fafc;
+      color: #f7f9fa;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .user-email {
       font-size: 11px;
-      color: #94a3b8;
+      color: var(--slate-400);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .btn-logout {
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--slate-400);
+      padding: 6px 9px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
     }
     .btn-logout:hover {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: rgba(239, 68, 68, 0.3);
-      color: #f87171;
+      background: rgba(234, 57, 67, 0.15);
+      border-color: rgba(234, 57, 67, 0.35);
+      color: #ff6b72;
     }
 
     /* MAIN VIEW */
@@ -227,11 +282,14 @@
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
+
+    /* TOP HEADER */
     .top-header {
       background: #ffffff;
       border-bottom: 1px solid var(--slate-200);
-      padding: 16px 24px;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -241,12 +299,14 @@
       min-width: 0;
       max-width: 100%;
       box-sizing: border-box;
+      gap: 16px;
     }
     .header-title-block {
       min-width: 0;
+      flex: 1 1 auto;
     }
     .header-title-block h1 {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--slate-900);
       letter-spacing: -0.02em;
@@ -274,26 +334,48 @@
     .wa-status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       padding: 6px 12px;
       border-radius: 9999px;
       font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 0.02em;
       border: 1px solid transparent;
       cursor: pointer;
       white-space: nowrap;
+      user-select: none;
+      transition: all 0.15s ease;
     }
-    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-    .status-connected { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
-    .status-qr, .status-connecting { background: #fef3c7; color: #b45309; border-color: #fde68a; }
-    .status-disconnected { background: #f1f5f9; color: #475569; border-color: #e2e8f0; }
-    .status-error { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .status-connected {
+      background: #e7f7ef;
+      color: #008069;
+      border-color: #a7f3d0;
+    }
+    .status-qr, .status-connecting {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+    .status-disconnected {
+      background: #f0f2f5;
+      color: var(--slate-600);
+      border-color: var(--slate-300);
+    }
+    .status-error {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
 
-    /* CONTENT SECTIONS */
+    /* VIEW CONTENT */
     .view-content {
-      padding: 22px 28px;
-      max-width: 1400px;
+      padding: 24px 28px;
+      max-width: 1440px;
       width: 100%;
       margin: 0 auto;
       flex: 1;
@@ -301,8 +383,15 @@
       box-sizing: border-box;
       overflow-x: hidden;
     }
-    .tab-section { display: none; width: 100%; min-width: 0; }
-    .tab-section.active { display: block; animation: fadeIn 0.15s ease-in-out; }
+    .tab-section {
+      display: none;
+      width: 100%;
+      min-width: 0;
+    }
+    .tab-section.active {
+      display: block;
+      animation: fadeIn 0.15s ease-out;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
@@ -323,10 +412,19 @@
       padding: 16px 18px;
       box-shadow: var(--shadow-sm);
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .metric-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
     }
     .metric-label {
       font-size: 11.5px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--slate-500);
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -334,12 +432,16 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .metric-icon {
+      color: var(--slate-400);
+    }
     .metric-value {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
       color: var(--slate-900);
-      margin-top: 4px;
+      margin-top: 6px;
       letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
     }
 
     /* CARDS */
@@ -347,7 +449,7 @@
       background: white;
       border: 1px solid var(--slate-200);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 22px;
       box-shadow: var(--shadow-sm);
       margin-bottom: 20px;
       min-width: 0;
@@ -358,13 +460,22 @@
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      gap: 12px;
       min-width: 0;
     }
-    .card-title { font-size: 16px; font-weight: 700; color: var(--slate-900); }
-    .card-desc { font-size: 12.5px; color: var(--slate-500); margin-top: 2px; }
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.01em;
+    }
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--slate-500);
+      margin-top: 3px;
+    }
     .grid-2col {
       display: grid;
       grid-template-columns: 1.35fr 0.95fr;
@@ -379,8 +490,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 9px 14px;
+      gap: 7px;
+      padding: 9px 15px;
       border-radius: var(--radius-md);
       font-size: 13px;
       font-weight: 700;
@@ -390,28 +501,57 @@
       color: var(--slate-800);
       transition: all 0.15s ease;
       box-sizing: border-box;
+      white-space: nowrap;
+      user-select: none;
     }
-    .btn:hover { background: var(--slate-50); border-color: var(--slate-400); }
+    .btn:hover {
+      background: var(--slate-50);
+      border-color: var(--slate-400);
+      color: var(--slate-900);
+    }
     .btn-primary {
-      background: var(--primary);
-      border-color: var(--primary);
+      background: var(--wa-teal);
+      border-color: var(--wa-teal);
       color: white;
-      box-shadow: 0 2px 8px rgba(18, 140, 126, 0.25);
+      box-shadow: 0 2px 8px rgba(0, 128, 105, 0.25);
     }
-    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
-    .btn-danger { background: white; border-color: #fecaca; color: var(--danger); }
-    .btn-danger:hover { background: var(--danger-soft); border-color: var(--danger); }
-    .btn-sm { padding: 5px 10px; font-size: 11.5px; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    .btn-primary:hover {
+      background: var(--wa-teal-dark);
+      border-color: var(--wa-teal-dark);
+      color: white;
+    }
+    .btn-danger {
+      background: white;
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+    .btn-danger:hover {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+    .btn-sm {
+      padding: 6px 11px;
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
     /* FORMS */
-    .form-group { margin-bottom: 14px; width: 100%; }
+    .form-group {
+      margin-bottom: 15px;
+      width: 100%;
+    }
     .form-label {
       display: block;
       font-size: 12px;
       font-weight: 700;
       color: var(--slate-700);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     .form-input {
       width: 100%;
@@ -422,20 +562,23 @@
       color: var(--slate-900);
       background: white;
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: all 0.15s ease;
       box-sizing: border-box;
     }
     .form-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(18, 140, 126, 0.15);
+      border-color: var(--wa-teal);
+      box-shadow: 0 0 0 3px rgba(0, 128, 105, 0.15);
     }
-    textarea.form-input { resize: vertical; line-height: 1.5; }
+    textarea.form-input {
+      resize: vertical;
+      line-height: 1.5;
+    }
 
-    /* MEDIA UPLOAD AREA & PASTE */
+    /* MEDIA DROPZONE */
     .media-box {
-      border: 2px dashed #cbd5e1;
+      border: 2px dashed var(--slate-300);
       border-radius: var(--radius-md);
-      padding: 16px 14px;
+      padding: 18px 14px;
       background: var(--slate-50);
       transition: all 0.15s ease;
       cursor: pointer;
@@ -443,31 +586,51 @@
       width: 100%;
       box-sizing: border-box;
       min-width: 0;
+      text-align: center;
     }
     .media-box:hover, .media-box.dragover {
-      border-color: var(--primary);
-      background: var(--primary-soft);
+      border-color: var(--wa-teal);
+      background: #e7f7ef;
     }
+    .media-box-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .media-box-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--wa-teal);
+      flex-shrink: 0;
+    }
+
+    /* MEDIA PREVIEW CARD */
     .media-preview-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
       background: white;
       border: 1px solid var(--slate-200);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
       margin-top: 10px;
       width: 100%;
       max-width: 100%;
       min-width: 0;
       box-sizing: border-box;
-      overflow: hidden;
     }
     .media-preview-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       min-width: 0;
       flex: 1 1 0%;
       overflow: hidden;
@@ -488,7 +651,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      color: var(--slate-600);
       flex-shrink: 0;
     }
     .media-meta-text {
@@ -497,77 +660,127 @@
       overflow: hidden;
     }
     #attachedMediaName {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--slate-900);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 100%;
-      min-width: 0;
       display: block;
     }
 
     /* WHATSAPP PREVIEW CANVAS */
     .wa-preview-canvas {
-      background: #ece5dd url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" opacity="0.06"><text x="10" y="30" font-size="20">💬</text></svg>') repeat;
+      background-color: #efeae2;
+      background-image: radial-gradient(#d3c9bc 1px, transparent 1px);
+      background-size: 16px 16px;
       padding: 16px;
       border-radius: var(--radius-lg);
-      min-height: 200px;
+      min-height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       width: 100%;
       box-sizing: border-box;
-      overflow: hidden;
+      border: 1px solid #d9d2c7;
     }
     .wa-bubble {
-      background: #dcf8c6;
-      border-radius: 12px 3px 12px 12px;
-      padding: 10px 12px;
-      font-size: 13px;
+      background: var(--wa-bubble-sent);
+      border-radius: 10px 0px 10px 10px;
+      padding: 9px 12px;
+      font-size: 13.5px;
       line-height: 1.45;
-      color: #111827;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      color: #111b21;
+      box-shadow: 0 1px 1px rgba(11, 20, 26, 0.12);
       position: relative;
-      max-width: 95%;
+      max-width: 90%;
       margin-left: auto;
       word-break: break-word;
       box-sizing: border-box;
+    }
+    .wa-bubble::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -8px;
+      width: 0;
+      height: 0;
+      border-top: 10px solid var(--wa-bubble-sent);
+      border-right: 8px solid transparent;
     }
     .wa-bubble-media {
       margin-bottom: 8px;
       border-radius: 8px;
       overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: white;
     }
     .wa-bubble-img {
       width: 100%;
-      max-height: 160px;
+      max-height: 180px;
       object-fit: cover;
       display: block;
     }
     .wa-bubble-doc {
       background: #ffffff;
-      padding: 8px 10px;
-      border-radius: 8px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      gap: 10px;
+      font-size: 12.5px;
     }
     .wa-bubble-time {
       text-align: right;
-      font-size: 10px;
-      color: #64748b;
+      font-size: 10.5px;
+      color: var(--slate-500);
       margin-top: 4px;
       display: flex;
       justify-content: flex-end;
       align-items: center;
       gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .wa-double-tick {
+      color: var(--wa-ticks);
+      display: inline-flex;
+      align-items: center;
     }
 
-    /* TABLES */
+    /* CHECKLIST */
+    .chk-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+      padding: 4px 0;
+      transition: color 0.15s ease;
+    }
+    .chk-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .chk-row.ready {
+      color: var(--slate-800);
+      font-weight: 600;
+    }
+    .chk-row.ready .chk-icon {
+      background: var(--wa-teal);
+      color: white;
+    }
+    .chk-row.pending {
+      color: var(--slate-500);
+    }
+    .chk-row.pending .chk-icon {
+      background: var(--slate-200);
+      color: var(--slate-400);
+    }
+
+    /* TABLES & LIST VIEW */
     .table-container {
       width: 100%;
       max-width: 100%;
@@ -590,36 +803,174 @@
       background: var(--slate-50);
       color: var(--slate-600);
       font-weight: 700;
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--slate-200);
       font-size: 11.5px;
       text-transform: uppercase;
       letter-spacing: 0.03em;
     }
     td {
-      padding: 10px 12px;
+      padding: 11px 14px;
       border-bottom: 1px solid var(--slate-200);
       color: var(--slate-800);
     }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fafcff; }
+    tr:hover td { background: var(--slate-50); }
 
     /* BADGES */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
+      gap: 5px;
+      padding: 3px 9px;
       border-radius: 9999px;
       font-size: 11px;
       font-weight: 700;
+      white-space: nowrap;
+      user-select: none;
     }
-    .badge-success { background: var(--success-soft); color: #065f46; }
+    .badge-success { background: #e7f7ef; color: #008069; }
     .badge-warning { background: var(--warning-soft); color: #92400e; }
-    .badge-danger { background: var(--danger-soft); color: #991b1b; }
+    .badge-danger { background: var(--danger-soft); color: #b91c1c; }
     .badge-neutral { background: var(--slate-100); color: var(--slate-600); }
+    .badge-teal { background: rgba(0, 168, 132, 0.12); color: var(--wa-teal); }
 
-    /* ACTION GROUPS */
+    /* LIST PILLS BAR */
+    .list-pills-bar {
+      margin-bottom: 14px;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .list-pills-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      -webkit-overflow-scrolling: touch;
+      align-items: center;
+    }
+    .list-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 13px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--slate-700);
+      background: white;
+      border: 1px solid var(--slate-300);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .list-pill:hover {
+      background: var(--slate-50);
+      border-color: var(--slate-400);
+    }
+    .list-pill.active {
+      background: #e7f7ef;
+      border-color: var(--wa-teal);
+      color: var(--wa-teal);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0, 128, 105, 0.15);
+    }
+    .list-pill-add {
+      border-style: dashed;
+      color: var(--wa-teal);
+      border-color: var(--wa-teal);
+      background: transparent;
+    }
+    .list-pill-add:hover {
+      background: #e7f7ef;
+    }
+    .pill-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, 0.06);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+    .list-pill.active .pill-count {
+      background: var(--wa-teal);
+      color: white;
+    }
+
+    /* ACTIVE LIST BANNER */
+    .active-list-banner {
+      background: #f7f9fa;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .active-list-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .active-list-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1px solid var(--slate-200);
+      color: var(--wa-teal);
+      flex-shrink: 0;
+    }
+    .active-list-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* TAG CHIPS */
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      margin: 1px;
+    }
+    .tag-emerald { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .tag-blue { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+    .tag-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .tag-rose { background: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3; }
+    .tag-slate { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+    .tag-chip-add {
+      background: white;
+      border: 1px dashed var(--slate-300);
+      color: var(--slate-600);
+      cursor: pointer;
+    }
+    .tag-chip-add:hover {
+      border-color: var(--wa-teal);
+      color: var(--wa-teal);
+    }
+
+    /* TOOLBARS */
     .composer-actions {
       display: flex;
       gap: 10px;
@@ -653,12 +1004,12 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(17, 27, 33, 0.7);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 12px;
+      padding: 16px;
       z-index: 150;
       box-sizing: border-box;
     }
@@ -667,27 +1018,39 @@
       border-radius: var(--radius-lg);
       max-width: 520px;
       width: 100%;
-      max-height: 90vh;
+      max-height: calc(100vh - 40px);
       overflow-y: auto;
-      padding: 22px;
+      overscroll-behavior: contain;
+      padding: 24px;
       box-shadow: var(--shadow-lg);
       position: relative;
       box-sizing: border-box;
     }
-    .modal-header { margin-bottom: 16px; }
-    .modal-title { font-size: 17px; font-weight: 800; color: var(--slate-900); }
-    .modal-desc { font-size: 12.5px; color: var(--slate-500); margin-top: 3px; }
+    .modal-header {
+      margin-bottom: 18px;
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.01em;
+    }
+    .modal-desc {
+      font-size: 12.5px;
+      color: var(--slate-500);
+      margin-top: 3px;
+    }
 
     /* AUTH OVERLAY */
     .auth-overlay {
       position: fixed;
       inset: 0;
-      background: #0f172a;
+      background: var(--slate-900);
       z-index: 200;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 14px;
+      padding: 16px;
       box-sizing: border-box;
     }
     .auth-card {
@@ -695,8 +1058,8 @@
       border-radius: var(--radius-xl);
       max-width: 420px;
       width: 100%;
-      padding: 28px 24px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      padding: 32px 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       box-sizing: border-box;
     }
     .auth-tabs {
@@ -704,12 +1067,12 @@
       background: var(--slate-100);
       padding: 4px;
       border-radius: var(--radius-md);
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .auth-tab {
       flex: 1;
       text-align: center;
-      padding: 8px 4px;
+      padding: 8px 6px;
       font-size: 12.5px;
       font-weight: 700;
       color: var(--slate-600);
@@ -718,7 +1081,11 @@
       transition: all 0.15s ease;
       user-select: none;
     }
-    .auth-tab.active { background: white; color: var(--slate-900); box-shadow: var(--shadow-sm); }
+    .auth-tab.active {
+      background: white;
+      color: var(--slate-900);
+      box-shadow: var(--shadow-sm);
+    }
 
     /* TOAST */
     .toast-container {
@@ -726,7 +1093,7 @@
       bottom: 74px;
       right: 16px;
       left: 16px;
-      max-width: 400px;
+      max-width: 420px;
       margin: 0 auto;
       z-index: 999;
       display: flex;
@@ -737,16 +1104,16 @@
     .toast {
       background: var(--slate-900);
       color: white;
-      padding: 10px 16px;
+      padding: 11px 16px;
       border-radius: var(--radius-md);
       font-size: 12.5px;
       font-weight: 600;
       box-shadow: var(--shadow-lg);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       animation: slideUp 0.2s ease-out;
-      border-left: 4px solid var(--primary-light);
+      border-left: 4px solid var(--wa-teal-light);
       pointer-events: auto;
     }
     @keyframes slideUp {
@@ -764,14 +1131,14 @@
       width: 100% !important;
       max-width: 100vw !important;
       height: 60px;
-      background: #0b1320;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--slate-900);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
       z-index: 9999 !important;
       justify-content: space-around;
       align-items: center;
       padding: 4px 6px env(safe-area-inset-bottom, 4px);
       box-sizing: border-box;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
     }
     .mobile-nav-btn {
       flex: 1 1 0;
@@ -779,130 +1146,100 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
-      color: #94a3b8;
+      gap: 3px;
+      color: var(--slate-400);
       font-size: 10px;
       font-weight: 700;
       background: transparent;
       border: none;
-      padding: 4px 2px;
+      padding: 5px 2px;
       cursor: pointer;
       min-width: 0;
+      transition: color 0.15s ease;
     }
-    .mobile-nav-btn.active { color: var(--primary-light); }
-    .mobile-nav-btn span.icon { font-size: 17px; }
+    .mobile-nav-btn.active {
+      color: var(--wa-teal-light);
+    }
+    .mobile-nav-btn .icon {
+      width: 18px;
+      height: 18px;
+    }
 
     .hidden { display: none !important; }
     .mono { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
 
-    /* RESPONSIVE MEDIA QUERIES */
+    /* RESPONSIVE BREAKPOINTS */
     @media (max-width: 980px) {
       html, body {
         width: 100% !important;
         max-width: 100vw !important;
         overflow-x: hidden !important;
-        position: relative !important;
       }
       .app-shell {
         display: block !important;
         width: 100% !important;
         max-width: 100vw !important;
         overflow-x: hidden !important;
-        padding-bottom: 74px !important;
+        padding-bottom: 84px !important;
       }
       .sidebar { display: none !important; }
-      .mobile-bar {
-        display: flex !important;
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        z-index: 9999 !important;
-      }
+      .mobile-bar { display: flex !important; }
+      
       .main-area {
         width: 100% !important;
         max-width: 100% !important;
         overflow-x: hidden !important;
       }
       .top-header {
-        padding: 12px 14px !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 8px !important;
+        padding: 12px 16px !important;
+        gap: 10px !important;
         width: 100% !important;
-        max-width: 100% !important;
         box-sizing: border-box !important;
-      }
-      .header-title-block {
-        width: 100% !important;
-        min-width: 0 !important;
-      }
-      .header-title-block h1 {
-        font-size: 18px !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-      }
-      .header-title-block .subtitle {
-        font-size: 11px !important;
-        white-space: normal !important;
-        flex-wrap: wrap !important;
-        gap: 4px !important;
-        word-break: break-word !important;
-      }
-      .header-actions {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 8px !important;
       }
       .view-content {
-        padding: 12px 10px !important;
+        padding: 16px 14px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        overflow-x: hidden !important;
       }
       .grid-2col {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
-        max-width: 100% !important;
-        gap: 14px !important;
+        gap: 16px !important;
       }
       .metrics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 8px !important;
+        gap: 10px !important;
         width: 100% !important;
       }
       .card {
-        padding: 14px 12px !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
+        padding: 16px 14px !important;
+        border-radius: var(--radius-md) !important;
       }
     }
 
     @media (max-width: 600px) {
+      .top-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .header-actions {
+        display: flex !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+      }
       .card-header {
         flex-direction: column;
         align-items: stretch;
-        gap: 8px;
+        gap: 10px;
       }
       .metric-card {
-        padding: 10px 12px;
-        border-radius: 10px;
+        padding: 12px 14px;
       }
-      .metric-label { font-size: 10px; }
-      .metric-value { font-size: 19px; margin-top: 2px; }
-
-      .wa-status-badge {
-        padding: 4px 8px;
-        font-size: 10.5px;
-      }
+      .metric-label { font-size: 10.5px; }
+      .metric-value { font-size: 20px; }
 
       .composer-actions {
         flex-direction: column;
@@ -911,7 +1248,6 @@
       }
       .composer-actions .btn {
         width: 100%;
-        white-space: normal;
         text-align: center;
       }
 
@@ -931,63 +1267,21 @@
       }
       .contact-actions-group .btn {
         width: 100%;
-        font-size: 11px;
-        padding: 8px 4px;
-        text-align: center;
-      }
-
-      .media-preview-card {
-        padding: 6px 8px;
-        gap: 6px;
-      }
-      .media-thumb, .media-doc-icon {
-        width: 36px;
-        height: 36px;
-      }
-      #attachedMediaName {
-        max-width: 110px;
-      }
-
-      .wa-preview-canvas {
-        padding: 10px;
-        min-height: 160px;
-      }
-      .wa-bubble {
-        max-width: 100%;
+        font-size: 11.5px;
+        padding: 8px 6px;
       }
 
       .modal-content {
-        padding: 16px 12px;
-        border-radius: 14px;
+        padding: 18px 14px;
+        border-radius: var(--radius-md);
       }
       .auth-card {
-        padding: 22px 14px;
+        padding: 24px 18px;
       }
       .toast-container {
-        bottom: 68px;
+        bottom: 70px;
         left: 10px;
         right: 10px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .metrics-grid {
-        grid-template-columns: 1fr !important;
-        gap: 6px !important;
-      }
-      .mobile-nav-btn span:not(.icon) {
-        font-size: 9px;
-      }
-      #attachedMediaName {
-        max-width: 80px;
-      }
-      .header-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .header-actions .btn {
-        width: 100%;
-        text-align: center;
       }
     }
   </style>
@@ -997,66 +1291,77 @@
   <!-- FIREBASE AUTHENTICATION OVERLAY -->
   <div id="authOverlay" class="auth-overlay">
     <div class="auth-card">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <div class="logo-icon" style="width: 40px; height: 40px; margin: 0 auto 10px; font-size: 20px;">💬</div>
-        <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-900);">Broadcast Desk</h2>
-        <p style="font-size: 12px; color: var(--slate-500); margin-top: 3px;">Personal WhatsApp Campaign Manager</p>
+      <div style="text-align: center; margin-bottom: 22px;">
+        <div class="logo-icon" style="width: 44px; height: 44px; margin: 0 auto 12px;">
+          <!-- WhatsApp Vector Logo -->
+          <svg class="icon icon-lg icon-filled" viewBox="0 0 24 24" style="color: white;">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </div>
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-900); letter-spacing: -0.02em;">Broadcast Desk</h2>
+        <p style="font-size: 12.5px; color: var(--slate-500); margin-top: 3px;">Sign in to your private workspace</p>
       </div>
 
       <!-- Auth Tabs -->
       <div class="auth-tabs">
         <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</div>
         <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Register</div>
-        <div class="auth-tab" id="tabForgot" onclick="switchAuthTab('forgot')">Forgot Password</div>
+        <div class="auth-tab" id="tabForgot" onclick="switchAuthTab('forgot')">Reset Password</div>
       </div>
 
       <!-- LOGIN FORM -->
       <form id="formLogin" onsubmit="window.doLogin(event)">
         <div class="form-group">
           <label class="form-label">Email Address</label>
-          <input type="email" id="loginEmail" class="form-input" placeholder="you@domain.com" required autocomplete="email">
+          <input type="email" id="loginEmail" class="form-input" placeholder="you@company.com" required autocomplete="email">
         </div>
         <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <label class="form-label" style="margin-bottom:0">Password</label>
-            <a href="javascript:void(0)" onclick="switchAuthTab('forgot')" style="font-size: 11.5px; color: var(--primary); text-decoration: none; font-weight: 700;">Forgot Password?</a>
+            <a href="javascript:void(0)" onclick="switchAuthTab('forgot')" style="font-size: 11.5px; color: var(--wa-teal); text-decoration: none; font-weight: 700;">Forgot Password?</a>
           </div>
           <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required autocomplete="current-password">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnLoginSubmit">Sign In with Firebase</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnLoginSubmit">
+          <span>Sign In</span>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
       </form>
 
       <!-- REGISTER FORM -->
       <form id="formRegister" class="hidden" onsubmit="window.doRegister(event)">
         <div class="form-group">
           <label class="form-label">Full Name</label>
-          <input type="text" id="regName" class="form-input" placeholder="e.g. John Doe" required>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. Sarah Connor" required>
         </div>
         <div class="form-group">
           <label class="form-label">Company / Workspace (Optional)</label>
-          <input type="text" id="regCompany" class="form-input" placeholder="e.g. Acme Corp">
+          <input type="text" id="regCompany" class="form-input" placeholder="e.g. Growth Ventures">
         </div>
         <div class="form-group">
           <label class="form-label">Email Address</label>
           <input type="email" id="regEmail" class="form-input" placeholder="you@company.com" required autocomplete="email">
         </div>
         <div class="form-group">
-          <label class="form-label">Password (Min 6 chars)</label>
+          <label class="form-label">Password (Min 6 characters)</label>
           <input type="password" id="regPassword" class="form-input" placeholder="Create secure password" minlength="6" required autocomplete="new-password">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnRegSubmit">Create Firebase Account</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px;" id="btnRegSubmit">
+          <span>Create Account</span>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
       </form>
 
       <!-- FORGOT PASSWORD FORM -->
       <form id="formForgot" class="hidden" onsubmit="window.doForgot(event)">
-        <p style="font-size: 12px; color: var(--slate-600); margin-bottom: 14px; line-height: 1.5;">
-          Enter your registered email address. Firebase will send a secure password reset link to your inbox.
+        <p style="font-size: 12px; color: var(--slate-600); margin-bottom: 16px; line-height: 1.5;">
+          Enter your registered email address. We will send a secure password reset link to your inbox.
         </p>
         <div class="form-group">
           <label class="form-label">Registered Email</label>
           <input type="email" id="forgotEmail" class="form-input" placeholder="you@domain.com" required autocomplete="email">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px;" id="btnForgotSubmit">Send Password Reset Email</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px;" id="btnForgotSubmit">Send Reset Link</button>
       </form>
     </div>
   </div>
@@ -1068,44 +1373,50 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo-badge">
-          <div class="logo-icon">💬</div>
+          <div class="logo-icon">
+            <svg class="icon icon-filled" viewBox="0 0 24 24" style="color: white; width: 18px; height: 18px;">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </div>
           <div>Broadcast Desk</div>
         </div>
-        <div class="logo-sub">Firebase + WhatsApp Web</div>
+        <div class="logo-sub">WhatsApp Multi-Device Desk</div>
       </div>
 
       <nav class="nav-list">
         <div class="nav-item active" onclick="switchTab('composer')">
-          <span class="nav-icon">✉️</span>
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span>Campaign Composer</span>
         </div>
         <div class="nav-item" onclick="switchTab('connect')">
-          <span class="nav-icon">🔗</span>
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
           <span>WhatsApp Connect</span>
         </div>
         <div class="nav-item" onclick="switchTab('contacts')">
-          <span class="nav-icon">👥</span>
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Contact Manager</span>
         </div>
         <div class="nav-item" onclick="switchTab('reports')">
-          <span class="nav-icon">📊</span>
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           <span>Send Reports</span>
         </div>
         <div class="nav-item" onclick="switchTab('profile')">
-          <span class="nav-icon">👤</span>
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>User Profile</span>
         </div>
       </nav>
 
       <div class="sidebar-user">
-        <div class="user-pill" onclick="switchTab('profile')" style="cursor: pointer;">
+        <div class="user-pill" onclick="switchTab('profile')">
           <div class="avatar" id="sideAvatar">..</div>
           <div class="user-meta">
             <div class="user-name" id="sideUserName">Loading…</div>
-            <div class="user-email" id="sideUserEmail">user@firebase</div>
+            <div class="user-email" id="sideUserEmail">user@workspace</div>
           </div>
         </div>
-        <button class="btn-logout" title="Sign Out" onclick="window.doLogout()">Logout</button>
+        <button class="btn-logout" title="Sign Out" onclick="window.doLogout()">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
       </div>
     </aside>
 
@@ -1116,42 +1427,57 @@
         <div class="header-title-block">
           <h1 id="pageTitle">Campaign Composer</h1>
           <div class="subtitle">
-            <span id="sessionDeskOwner">Desk for: Loading…</span>
-            <span>•</span>
-            <span id="devicePairingNote">Isolated Firestore Session</span>
+            <span id="sessionDeskOwner">Personal Broadcast Desk</span>
+            <span style="color: var(--slate-300);">•</span>
+            <span id="workspaceBadge" style="color: var(--wa-teal); font-weight: 600;">Workspace Active</span>
           </div>
         </div>
         <div class="header-actions">
-          <div id="headerStatusPill" class="wa-status-badge status-disconnected" onclick="switchTab('connect')">
+          <div id="headerStatusPill" class="wa-status-badge status-disconnected" onclick="switchTab('connect')" title="Click to view WhatsApp connection">
             <span class="badge-dot"></span>
             <span id="headerStatusText">DISCONNECTED</span>
           </div>
-          <button class="btn btn-sm btn-primary" onclick="switchTab('composer')">+ New Campaign</button>
+          <button class="btn btn-sm btn-primary" onclick="switchTab('composer')">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>New Campaign</span>
+          </button>
         </div>
       </header>
 
       <!-- VIEW CONTENT CONTAINER -->
       <div class="view-content">
 
-        <!-- 1. CAMPAIGN COMPOSER SECTION (With Add Media & Paste) -->
+        <!-- 1. CAMPAIGN COMPOSER SECTION -->
         <section id="section-composer" class="tab-section active">
           <!-- Metrics Strip -->
           <div class="metrics-grid">
             <div class="metric-card">
-              <div class="metric-label">Total Contacts</div>
+              <div class="metric-top">
+                <span class="metric-label">Total Contacts</span>
+                <svg class="icon icon-sm metric-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
               <div class="metric-value" id="statTotalContacts">0</div>
             </div>
             <div class="metric-card">
-              <div class="metric-label">Selected</div>
-              <div class="metric-value" id="statSelectedRecipients" style="color: var(--primary);">0</div>
+              <div class="metric-top">
+                <span class="metric-label">Selected</span>
+                <svg class="icon icon-sm metric-icon" viewBox="0 0 24 24" style="color: var(--wa-teal);"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="metric-value" id="statSelectedRecipients" style="color: var(--wa-teal);">0</div>
             </div>
             <div class="metric-card">
-              <div class="metric-label">Submitted</div>
-              <div class="metric-value" id="statSubmitted" style="color: #15803d;">0</div>
+              <div class="metric-top">
+                <span class="metric-label">Submitted</span>
+                <svg class="icon icon-sm metric-icon" viewBox="0 0 24 24" style="color: #008069;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="metric-value" id="statSubmitted" style="color: #008069;">0</div>
             </div>
             <div class="metric-card">
-              <div class="metric-label">Failed</div>
-              <div class="metric-value" id="statFailed" style="color: #b91c1c;">0</div>
+              <div class="metric-top">
+                <span class="metric-label">Failed</span>
+                <svg class="icon icon-sm metric-icon" viewBox="0 0 24 24" style="color: var(--danger);"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              </div>
+              <div class="metric-value" id="statFailed" style="color: var(--danger);">0</div>
             </div>
           </div>
 
@@ -1161,40 +1487,66 @@
               <div class="card-header">
                 <div>
                   <h2 class="card-title">Compose Campaign</h2>
-                  <p class="card-desc">Personalize text with <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">{{name}}</code> and attach images or documents.</p>
+                  <p class="card-desc">Personalize text with <code style="background: var(--slate-100); padding: 2px 6px; border-radius: 4px; font-weight: 600;">{{name}}</code> and attach images or documents.</p>
+                </div>
+              </div>
+
+              <!-- BROADCAST TARGET AUDIENCE / LIST SELECTOR -->
+              <div class="form-group" style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                  <label class="form-label" style="margin-bottom: 0; display: flex; align-items: center; gap: 7px;">
+                    <svg class="icon icon-sm" style="color: var(--wa-teal);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span>Target Broadcast Audience</span>
+                  </label>
+                  <span id="composerAudiencePill" class="badge badge-success">All Contacts</span>
+                </div>
+                <select id="composerTargetListSelect" class="form-input" style="font-weight: 600;" onchange="window.handleComposerTargetListChange(this.value)">
+                  <option value="all">🌐 All Contacts (0)</option>
+                </select>
+                <div style="font-size: 11.5px; color: var(--slate-500); margin-top: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span id="composerTargetHint">Broadcasting to all eligible contacts in your desk.</span>
+                  <button type="button" class="btn btn-sm" style="padding: 3px 8px; font-size: 11px;" onclick="switchTab('contacts')">
+                    <span>Manage Lists</span>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </button>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Campaign Reference (Optional)</label>
-                <input type="text" id="composerCampaignName" class="form-input" placeholder="e.g. Product Announcement">
+                <input type="text" id="composerCampaignName" class="form-input" placeholder="e.g. VIP Product Launch">
               </div>
 
               <!-- Message Body -->
               <div class="form-group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="form-label" style="margin-bottom:0">Message Body / Caption</label>
-                  <button type="button" class="btn btn-sm" style="padding: 2px 8px; font-size: 11px;" onclick="insertToken('{{name}}')">+ Insert {{name}}</button>
+                  <button type="button" class="btn btn-sm" style="padding: 2px 8px; font-size: 11px;" onclick="insertToken('{{name}}')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Insert {{name}}</span>
+                  </button>
                 </div>
                 <textarea id="composerMessage" class="form-input" rows="5" placeholder="Hi {{name}},&#10;&#10;Here is the update we discussed. Let me know if you have any questions!"></textarea>
-                <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 11.5px; color: var(--slate-500);">
+                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11.5px; color: var(--slate-500);">
                   <span>Plain text with emojis</span>
-                  <span id="composerCharCount">0 characters</span>
+                  <span id="composerCharCount" style="font-variant-numeric: tabular-nums;">0 characters</span>
                 </div>
               </div>
 
               <!-- ADD MEDIA UPLOAD & PASTE AREA -->
               <div class="form-group">
-                <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
-                  <span>Add Media (Image or Document)</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+                  <label class="form-label" style="margin-bottom: 0;">Add Media (Image or Document)</label>
                   <span style="font-size: 11px; font-weight: 500; color: var(--slate-500);">Paste supported (Ctrl+V)</span>
-                </label>
+                </div>
 
-                <!-- Media Dropzone / Upload Box -->
+                <!-- Media Dropzone -->
                 <div class="media-box" id="mediaDropzone" onclick="document.getElementById('mediaFileInput').click()">
-                  <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                    <span style="font-size: 24px;">📎</span>
-                    <div style="min-width: 0;">
+                  <div class="media-box-inner">
+                    <div class="media-box-icon">
+                      <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                    </div>
+                    <div style="text-align: left; min-width: 0;">
                       <div style="font-size: 13px; font-weight: 700; color: var(--slate-800);">Upload Image or Document</div>
                       <div style="font-size: 11px; color: var(--slate-500); margin-top: 2px;">
                         Click or drag & drop. Images or Docs (PDF, Word, CSV) up to 16MB.
@@ -1208,25 +1560,35 @@
                 <div id="attachedMediaCard" class="media-preview-card hidden">
                   <div class="media-preview-left">
                     <img id="attachedMediaThumb" class="media-thumb hidden" alt="Thumb">
-                    <div id="attachedMediaDocIcon" class="media-doc-icon">📄</div>
+                    <div id="attachedMediaDocIcon" class="media-doc-icon">
+                      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
                     <div class="media-meta-text">
                       <span id="attachedMediaName">filename.pdf</span>
-                      <div id="attachedMediaSize" style="font-size: 10.5px; color: var(--slate-500); margin-top: 1px;">240 KB</div>
+                      <div id="attachedMediaSize" style="font-size: 11px; color: var(--slate-500); margin-top: 1px; font-variant-numeric: tabular-nums;">240 KB</div>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-sm btn-danger" style="flex-shrink: 0;" onclick="window.removeAttachedMedia()">✕ Remove</button>
+                  <button type="button" class="btn btn-sm btn-danger" style="flex-shrink: 0;" onclick="window.removeAttachedMedia()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span>Remove</span>
+                  </button>
                 </div>
               </div>
 
               <!-- Policy notice -->
-              <div style="background: var(--warning-soft); border-left: 4px solid var(--warning); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-bottom: 16px;">
+              <div style="background: var(--warning-soft); border-left: 3px solid var(--warning); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-bottom: 16px;">
                 <b>Responsible Messaging:</b> Only message contacts who explicitly consented to receive WhatsApp communications from you.
               </div>
 
-              <!-- Responsive Action buttons -->
+              <!-- Action buttons -->
               <div class="composer-actions">
-                <button class="btn btn-primary" onclick="openReviewModal()">Review & Launch Batch →</button>
-                <button class="btn" onclick="switchTab('contacts')">Manage Selected (<span id="composerSelCount">0</span>)</button>
+                <button class="btn btn-primary" onclick="openReviewModal()">
+                  <span>Review & Launch Batch</span>
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <button class="btn" onclick="switchTab('contacts')">
+                  <span>Manage Selected (<span id="composerSelCount">0</span>)</span>
+                </button>
               </div>
             </div>
 
@@ -1236,7 +1598,7 @@
                 <div class="card-header">
                   <div>
                     <h2 class="card-title">Live Preview</h2>
-                    <p class="card-desc">Sample preview for the first selected contact</p>
+                    <p class="card-desc">Simulated message preview for selected contact</p>
                   </div>
                   <span class="badge badge-neutral" id="previewRecipientBadge">No recipient</span>
                 </div>
@@ -1247,10 +1609,10 @@
                     <div id="previewMediaContainer" class="wa-bubble-media hidden">
                       <img id="previewImageElement" class="wa-bubble-img hidden" alt="Media Preview">
                       <div id="previewDocElement" class="wa-bubble-doc hidden">
-                        <span style="font-size: 22px;">📄</span>
+                        <svg class="icon icon-lg" viewBox="0 0 24 24" style="color: var(--wa-teal);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <div style="min-width: 0;">
-                          <div id="previewDocName" style="font-weight: 700; font-size: 12px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">document.pdf</div>
-                          <div id="previewDocSize" style="font-size: 10px; color: #64748b;">PDF • 240 KB</div>
+                          <div id="previewDocName" style="font-weight: 700; font-size: 12px; color: var(--slate-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">document.pdf</div>
+                          <div id="previewDocSize" style="font-size: 10px; color: var(--slate-500);">PDF • 240 KB</div>
                         </div>
                       </div>
                     </div>
@@ -1259,18 +1621,40 @@
                     <div id="previewMessageText">Your message will appear here…</div>
                     <div class="wa-bubble-time">
                       <span>Just now</span>
-                      <span style="color: #38bdf8; font-weight: 800;">✓✓</span>
+                      <span class="wa-double-tick" title="Read receipt">
+                        <svg width="15" height="11" viewBox="0 0 16 11" fill="currentColor">
+                          <path d="M11.05 1.55l-5.6 5.6-2.1-2.1L2 6.45l3.45 3.45 7-7-1.4-1.35zm3.5 0l-5.6 5.6-.7-.7-1.4 1.4 2.1 2.1 7-7-1.4-1.4z"/>
+                        </svg>
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Launch Checklist -->
-                <div style="margin-top: 16px;">
-                  <div style="font-size: 11.5px; font-weight: 700; color: var(--slate-700); margin-bottom: 6px;">Launch Checklist</div>
-                  <div id="checklistItems" style="display: flex; flex-direction: column; gap: 5px; font-size: 11.5px;">
-                    <div id="chk-connected">○ WhatsApp Session Connected</div>
-                    <div id="chk-contacts">○ Contacts Loaded & Selected</div>
-                    <div id="chk-message">○ Message or Media Added</div>
+                <div style="margin-top: 18px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 700; color: var(--slate-800);">Launch Checklist</span>
+                    <span id="checklistReadyBadge" class="badge badge-warning">Needs Setup</span>
+                  </div>
+                  <div id="checklistItems" style="display: flex; flex-direction: column; gap: 6px;">
+                    <div id="chk-connected" class="chk-row pending">
+                      <span class="chk-icon" id="chk-icon-conn">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                      </span>
+                      <span id="chk-text-conn">WhatsApp Session Disconnected</span>
+                    </div>
+                    <div id="chk-contacts" class="chk-row pending">
+                      <span class="chk-icon" id="chk-icon-contacts">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                      </span>
+                      <span id="chk-text-contacts">Recipients Selected (<b>0</b>)</span>
+                    </div>
+                    <div id="chk-message" class="chk-row pending">
+                      <span class="chk-icon" id="chk-icon-msg">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                      </span>
+                      <span id="chk-text-msg">Message or Media Added</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1285,60 +1669,72 @@
               <div class="card-header">
                 <div>
                   <h2 class="card-title">Personal WhatsApp Link</h2>
-                  <p class="card-desc">Link your phone using WhatsApp Web multi-device mode.</p>
+                  <p class="card-desc">Pair your phone using WhatsApp Web multi-device mode.</p>
                 </div>
-                <button class="btn btn-sm" onclick="window.fetchStatus()">Refresh Status</button>
+                <button class="btn btn-sm" onclick="window.fetchStatus()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  <span>Refresh</span>
+                </button>
               </div>
 
               <!-- QR Display Area -->
-              <div id="qrContainer" style="border: 2px dashed #cbd5e1; border-radius: var(--radius-lg); padding: 24px 14px; text-align: center; background: var(--slate-50); width: 100%; box-sizing: border-box; overflow: hidden;">
-                <div id="qrLoadingSpinner" style="display: inline-block; font-size: 30px; margin-bottom: 10px;">📱</div>
-                <div id="qrMessageTitle" style="font-size: 14.5px; font-weight: 700; color: var(--slate-800);">WhatsApp session not paired</div>
-                <p id="qrMessageDesc" style="font-size: 12.5px; color: var(--slate-500); max-width: 360px; margin: 6px auto 14px;">
+              <div id="qrContainer" style="border: 2px dashed var(--slate-300); border-radius: var(--radius-lg); padding: 28px 16px; text-align: center; background: var(--slate-50); width: 100%; box-sizing: border-box; overflow: hidden;">
+                <div id="qrLoadingIcon" style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: white; border: 1px solid var(--slate-200); margin: 0 auto 12px; color: var(--wa-teal);">
+                  <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+                <div id="qrMessageTitle" style="font-size: 15px; font-weight: 800; color: var(--slate-900);">WhatsApp session not paired</div>
+                <p id="qrMessageDesc" style="font-size: 12.5px; color: var(--slate-500); max-width: 380px; margin: 6px auto 16px;">
                   Click "Start Pairing" to generate your real WhatsApp Web QR code.
                 </p>
                 <img id="qrDisplayImage" alt="WhatsApp QR Code" class="hidden" style="width: 240px; max-width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 12px; margin: 0 auto; box-shadow: var(--shadow-md); border: 1px solid var(--slate-200);">
               </div>
 
               <!-- Connection Action Buttons -->
-              <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;">
-                <button class="btn btn-primary" id="btnPairWhatsApp" onclick="window.requestConnect()">Start Pairing / Generate QR</button>
-                <button class="btn btn-danger" id="btnDisconnectWhatsApp" onclick="window.requestDisconnect()">Disconnect Session</button>
+              <div style="display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="btnPairWhatsApp" onclick="window.requestConnect()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  <span>Start Pairing / Generate QR</span>
+                </button>
+                <button class="btn btn-danger" id="btnDisconnectWhatsApp" onclick="window.requestDisconnect()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  <span>Disconnect Session</span>
+                </button>
               </div>
 
-              <div style="margin-top: 20px; padding: 14px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 12px; color: var(--slate-600); line-height: 1.6;">
-                <b>Instructions:</b><br>
+              <div style="margin-top: 20px; padding: 14px; background: var(--slate-50); border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 12px; color: var(--slate-600); line-height: 1.6;">
+                <b style="color: var(--slate-900);">Pairing Steps:</b><br>
                 1. Open WhatsApp on your phone.<br>
-                2. Go to <b>Settings (or Menu ⋮) → Linked Devices → Link a Device</b>.<br>
+                2. Tap <b>Settings (or Menu ⋮) → Linked Devices → Link a Device</b>.<br>
                 3. Scan the QR code displayed above.<br>
-                4. Your session persists securely for your Firebase user account.
+                4. Your session persists securely for your account.
               </div>
             </div>
 
             <!-- Session Details Card -->
             <div class="card">
-              <h2 class="card-title" style="margin-bottom: 14px;">Session Diagnostics</h2>
-              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12.5px;">
+              <h2 class="card-title" style="margin-bottom: 16px;">Session Diagnostics</h2>
+              <div style="display: flex; flex-direction: column; gap: 12px; font-size: 12.5px;">
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
                   <span style="color: var(--slate-500);">Session Status</span>
-                  <b id="diagStatus">Disconnected</b>
+                  <b id="diagStatus" style="font-variant-numeric: tabular-nums;">Disconnected</b>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
                   <span style="color: var(--slate-500);">Connected Device</span>
-                  <b id="diagPhone">None</b>
+                  <b id="diagPhone" class="mono">None</b>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
-                  <span style="color: var(--slate-500);">Storage & Auth</span>
-                  <b style="color: var(--primary);">Firebase Firestore</b>
+                  <span style="color: var(--slate-500);">Storage & Persistence</span>
+                  <b style="color: var(--wa-teal);">Firebase Firestore</b>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
                   <span style="color: var(--slate-500);">Last Sync</span>
-                  <b id="diagSync">Never</b>
+                  <b id="diagSync" style="font-variant-numeric: tabular-nums;">Never</b>
                 </div>
               </div>
 
-              <div style="margin-top: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: var(--radius-md); font-size: 11.5px; color: #166534;">
-                🔒 <b>Firebase Security Rules Active:</b> Access to your contacts, campaigns, and delivery reports is strictly restricted to your authenticated Firebase UID.
+              <div style="margin-top: 22px; background: #e7f7ef; border: 1px solid #a7f3d0; padding: 12px; border-radius: var(--radius-md); font-size: 11.5px; color: #006853; display: flex; gap: 8px; align-items: flex-start;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" style="color: var(--wa-teal); margin-top: 1px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span><b>Firebase Security Rules Active:</b> Access to your contacts, campaigns, and delivery reports is strictly restricted to your authenticated user account.</span>
               </div>
             </div>
           </div>
@@ -1349,34 +1745,93 @@
           <div class="card">
             <div class="card-header">
               <div>
-                <h2 class="card-title">Audience & Contact List</h2>
-                <p class="card-desc">Import CSV files with headers: <code class="mono">name, phone, opted_in</code> or add contacts individually.</p>
+                <h2 class="card-title">Audience & Contact Lists</h2>
+                <p class="card-desc">Organize contacts into custom broadcast lists, import CSVs, or add contacts individually.</p>
               </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="btn btn-sm btn-primary" onclick="openAddContactModal()">+ Add Contact</button>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn btn-sm" onclick="window.openCreateListModal()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Create List</span>
+                </button>
+                <button class="btn btn-sm btn-primary" onclick="openAddContactModal()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Add Contact</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- List Pills / Segments Bar -->
+            <div class="list-pills-bar">
+              <div class="list-pills-scroll" id="listPillsScroll">
+                <button class="list-pill active" id="list-pill-all" onclick="window.filterByList('all')">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <span>All Contacts</span>
+                  <span class="pill-count" id="pillCountAll">0</span>
+                </button>
+                <div id="dynamicListPills" style="display: flex; gap: 8px;"></div>
+                <button class="list-pill list-pill-add" onclick="window.openCreateListModal()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>New List</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active List Management Banner -->
+            <div id="activeListBanner" class="active-list-banner hidden">
+              <div class="active-list-info">
+                <div class="active-list-badge" id="activeListColorBadge">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div style="font-weight: 800; font-size: 14px; color: var(--slate-900);" id="activeListName">List Name</div>
+                  <div style="font-size: 11.5px; color: var(--slate-500);" id="activeListMeta">0 contacts</div>
+                </div>
+              </div>
+              <div class="active-list-actions">
+                <button class="btn btn-sm btn-primary" onclick="window.broadcastCurrentList()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <span>Broadcast to this List</span>
+                </button>
+                <button class="btn btn-sm" onclick="window.openEditListModal()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <span>Rename</span>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="window.deleteActiveList()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <span>Delete List</span>
+                </button>
               </div>
             </div>
 
             <!-- Upload Zone -->
-            <label class="media-box" for="csvFileInput" style="display: block; text-align: center; padding: 22px 14px;">
-              <div style="font-size: 28px; color: var(--primary); margin-bottom: 6px;">📁</div>
-              <div style="font-size: 13.5px; font-weight: 700; color: var(--slate-800);">Upload Contacts CSV</div>
-              <div style="font-size: 11.5px; color: var(--slate-500); margin-top: 2px;">Click to browse, or drag & drop CSV file</div>
+            <label class="media-box" for="csvFileInput" style="display: block; text-align: center; padding: 22px 14px; margin-bottom: 14px;">
+              <div class="media-box-inner">
+                <div class="media-box-icon" style="color: var(--wa-teal);">
+                  <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div style="text-align: left; min-width: 0;">
+                  <div style="font-size: 13.5px; font-weight: 700; color: var(--slate-800);">Upload Contacts CSV</div>
+                  <div style="font-size: 11.5px; color: var(--slate-500); margin-top: 2px;">Click to browse, or drag & drop CSV file (headers: name, phone, opted_in)</div>
+                </div>
+              </div>
             </label>
             <input type="file" id="csvFileInput" accept=".csv,text/csv" class="hidden" onchange="window.handleCsvUpload(event)">
 
-            <!-- Mobile-Optimized Search & Filter Bar -->
+            <!-- Search, Filter & List Assignment Bar -->
             <div class="contact-toolbar">
               <div class="contact-search-group">
-                <input type="text" id="contactSearchInput" class="form-input" placeholder="Search name or phone…" style="flex: 1;" oninput="renderContactsTable()">
-                <select id="contactFilterSelect" class="form-input" style="width: 150px;" onchange="renderContactsTable()">
-                  <option value="all">All Contacts</option>
+                <input type="text" id="contactSearchInput" class="form-input" placeholder="Search name, phone or list…" style="flex: 1;" oninput="renderContactsTable()">
+                <select id="contactFilterSelect" class="form-input" style="width: 140px;" onchange="renderContactsTable()">
+                  <option value="all">All Status</option>
                   <option value="selected">Selected Only</option>
                   <option value="opted">Opted-In Only</option>
                   <option value="unverified">Needs Consent</option>
                 </select>
               </div>
               <div class="contact-actions-group">
+                <select id="bulkAssignListSelect" class="form-input" style="width: 145px; font-size: 12px; padding: 7px 9px;" onchange="window.handleBulkAssignList(this.value)">
+                  <option value="">Add to List…</option>
+                </select>
                 <button class="btn btn-sm" onclick="selectAllFiltered()">Select All</button>
                 <button class="btn btn-sm" onclick="clearSelected()">Clear</button>
                 <button class="btn btn-sm btn-danger" onclick="deleteSelectedContacts()">Delete</button>
@@ -1397,6 +1852,7 @@
                     </th>
                     <th>Name</th>
                     <th>WhatsApp Phone</th>
+                    <th>Lists / Tags</th>
                     <th>Opt-In Status</th>
                     <th>Added On</th>
                     <th style="text-align: right;">Action</th>
@@ -1404,7 +1860,7 @@
                 </thead>
                 <tbody id="contactsTableBody">
                   <tr>
-                    <td colspan="6" style="text-align: center; padding: 32px; color: var(--slate-500);">
+                    <td colspan="7" style="text-align: center; padding: 32px; color: var(--slate-500);">
                       No contacts loaded yet. Upload a CSV file or add contacts to begin.
                     </td>
                   </tr>
@@ -1420,17 +1876,23 @@
             <div class="card-header">
               <div>
                 <h2 class="card-title">Broadcast Activity Log</h2>
-                <p class="card-desc">Real-time log of dispatched campaign messages in your Firebase desk.</p>
+                <p class="card-desc">Real-time log of dispatched campaign messages in your private desk.</p>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button class="btn btn-sm" onclick="exportReportCSV()">📥 Export CSV</button>
-                <button class="btn btn-sm btn-danger" onclick="window.clearReportsInFirestore()">Clear Log</button>
+                <button class="btn btn-sm" onclick="exportReportCSV()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Export CSV</span>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="window.clearReportsInFirestore()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <span>Clear Log</span>
+                </button>
               </div>
             </div>
 
             <div id="sendingNotice" class="hidden" style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 14px; border-radius: var(--radius-md); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
               <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">⏳</span>
+                <svg class="icon icon-sm" viewBox="0 0 24 24" style="color: #1e40af;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
                 <span style="font-size: 12px; font-weight: 600; color: #1e40af;">Campaign broadcast currently in progress…</span>
               </div>
             </div>
@@ -1466,8 +1928,8 @@
             <div class="card">
               <div class="card-header">
                 <div>
-                  <h2 class="card-title">Firebase Profile</h2>
-                  <p class="card-desc">Your personal account details stored in Firestore.</p>
+                  <h2 class="card-title">User Profile</h2>
+                  <p class="card-desc">Your personal account details stored in your Firebase workspace.</p>
                 </div>
               </div>
 
@@ -1485,7 +1947,7 @@
                   <input type="text" id="profileCompany" class="form-input" placeholder="e.g. Sales Team Alpha">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Firebase User UID</label>
+                  <label class="form-label">User UID</label>
                   <input type="text" id="profileUid" class="form-input mono" disabled style="background: var(--slate-100); color: var(--slate-500);">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Save Profile Changes</button>
@@ -1510,13 +1972,16 @@
 
               <!-- Session Info -->
               <div class="card">
-                <h2 class="card-title" style="margin-bottom: 10px;">Active Firebase Session</h2>
-                <div style="background: var(--slate-50); padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 11.5px;">
-                  <div style="color: var(--slate-500); margin-bottom: 2px;">Authentication Provider:</div>
-                  <div class="mono" style="word-break: break-all; color: var(--slate-800);">Firebase Auth (Email / Password)</div>
+                <h2 class="card-title" style="margin-bottom: 10px;">Active Session</h2>
+                <div style="background: var(--slate-50); padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid var(--slate-200); font-size: 12px;">
+                  <div style="color: var(--slate-500); margin-bottom: 2px;">Authentication:</div>
+                  <div class="mono" style="word-break: break-all; color: var(--slate-800);">Firebase Authentication (Secure Token)</div>
                 </div>
                 <div style="margin-top: 14px;">
-                  <button class="btn btn-danger" style="width: 100%;" onclick="window.doLogout()">Sign Out of Broadcast Desk</button>
+                  <button class="btn btn-danger" style="width: 100%;" onclick="window.doLogout()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Sign Out of Broadcast Desk</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1530,23 +1995,23 @@
   <!-- FIXED MOBILE BOTTOM NAVIGATION BAR -->
   <nav class="mobile-bar" id="mobileNavBar">
     <button class="mobile-nav-btn active" id="mob-composer" onclick="switchTab('composer')">
-      <span class="icon">✉️</span>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       <span>Composer</span>
     </button>
     <button class="mobile-nav-btn" id="mob-connect" onclick="switchTab('connect')">
-      <span class="icon">🔗</span>
+      <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
       <span>Connect</span>
     </button>
     <button class="mobile-nav-btn" id="mob-contacts" onclick="switchTab('contacts')">
-      <span class="icon">👥</span>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
       <span>Contacts</span>
     </button>
     <button class="mobile-nav-btn" id="mob-reports" onclick="switchTab('reports')">
-      <span class="icon">📊</span>
+      <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       <span>Reports</span>
     </button>
     <button class="mobile-nav-btn" id="mob-profile" onclick="switchTab('profile')">
-      <span class="icon">👤</span>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>Profile</span>
     </button>
   </nav>
@@ -1568,15 +2033,109 @@
           <input type="tel" id="newContactPhone" class="form-input" placeholder="e.g. 14155552671" required>
         </div>
         <div class="form-group">
+          <label class="form-label">Assign to List (Optional)</label>
+          <select id="newContactListSelect" class="form-input">
+            <option value="">None (Uncategorized)</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
             <input type="checkbox" id="newContactConsent" checked> Contact has explicitly opted in to receive messages
           </label>
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
           <button type="button" class="btn" onclick="closeAddContactModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Add to Firestore</button>
+          <button type="submit" class="btn btn-primary">Add Contact</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- CREATE LIST MODAL -->
+  <div id="createListModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Create Contact List</h3>
+        <p class="modal-desc">Create a segmented audience list for targeted WhatsApp broadcasts.</p>
+      </div>
+      <form onsubmit="window.handleCreateList(event)">
+        <div class="form-group">
+          <label class="form-label">List Name</label>
+          <input type="text" id="newListName" class="form-input" placeholder="e.g. VIP Clients, Staff, Leads" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Color Theme</label>
+          <select id="newListColor" class="form-input">
+            <option value="emerald">Emerald Green</option>
+            <option value="blue">Ocean Blue</option>
+            <option value="purple">Royal Purple</option>
+            <option value="amber">Amber Orange</option>
+            <option value="rose">Rose Red</option>
+            <option value="slate">Slate Grey</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description (Optional)</label>
+          <input type="text" id="newListDesc" class="form-input" placeholder="e.g. High priority clients for weekly updates">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+          <button type="button" class="btn" onclick="window.closeCreateListModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveNewList">Save List</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT LIST MODAL -->
+  <div id="editListModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Contact List</h3>
+        <p class="modal-desc">Update list details.</p>
+      </div>
+      <form onsubmit="window.handleUpdateList(event)">
+        <input type="hidden" id="editListId">
+        <div class="form-group">
+          <label class="form-label">List Name</label>
+          <input type="text" id="editListName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Color Theme</label>
+          <select id="editListColor" class="form-input">
+            <option value="emerald">Emerald Green</option>
+            <option value="blue">Ocean Blue</option>
+            <option value="purple">Royal Purple</option>
+            <option value="amber">Amber Orange</option>
+            <option value="rose">Rose Red</option>
+            <option value="slate">Slate Grey</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description (Optional)</label>
+          <input type="text" id="editListDesc" class="form-input">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+          <button type="button" class="btn" onclick="window.closeEditListModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MANAGE CONTACT LISTS MODAL -->
+  <div id="contactListsModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Manage Lists for Contact</h3>
+        <p class="modal-desc" id="contactListsModalDesc">Select lists this contact belongs to.</p>
+      </div>
+      <input type="hidden" id="contactListsTargetContactId">
+      <div id="contactListsCheckboxes" style="display: flex; flex-direction: column; gap: 10px; margin: 16px 0; max-height: 240px; overflow-y: auto;">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button type="button" class="btn" onclick="window.closeContactListsModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="window.saveContactListsAssignment()">Save Assignments</button>
+      </div>
     </div>
   </div>
 
@@ -1584,7 +2143,7 @@
   <div id="reviewModal" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-header">
-        <div style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase;">Confirmation Step</div>
+        <div style="font-size: 11px; font-weight: 700; color: var(--wa-teal); text-transform: uppercase;">Confirmation Step</div>
         <h3 class="modal-title" style="margin-top: 4px;">Confirm WhatsApp Broadcast</h3>
         <p class="modal-desc">Review your campaign details and attached media before sending.</p>
       </div>
@@ -1641,11 +2200,15 @@
     let db = null;
     let currentUser = null;
     let contactsList = [];
+    let userLists = []; // [{ id, ownerId, name, color, description, createdAt }]
+    let activeContactListFilter = 'all'; // 'all' or listId
+    let composerTargetListId = 'all';
     let selectedContactIds = new Set();
     let reportsList = [];
     let attachedMedia = null; // { base64, mimetype, filename, size, isImage }
     let unsubscribeContacts = null;
     let unsubscribeReports = null;
+    let unsubscribeLists = null;
 
     // Toast utility
     window.showToast = function(message, isError = false) {
@@ -1653,7 +2216,12 @@
       const toast = document.createElement('div');
       toast.className = 'toast';
       if (isError) toast.style.borderLeftColor = 'var(--danger)';
-      toast.innerHTML = `<span>${isError ? '⚠️' : '✓'}</span><span>${escapeHtml(message)}</span>`;
+      toast.innerHTML = `
+        <svg class="icon icon-sm" viewBox="0 0 24 24" style="color: ${isError ? 'var(--danger)' : 'var(--wa-teal-light)'}">
+          ${isError ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' : '<polyline points="20 6 9 17 4 12"/>'}
+        </svg>
+        <span>${escapeHtml(message)}</span>
+      `;
       container.appendChild(toast);
       setTimeout(() => {
         toast.style.opacity = '0';
@@ -1688,9 +2256,8 @@
       messagingSenderId: "35117254965"
     };
 
-    // Safe configuration loader that NEVER crashes on Cloudflare Pages or non-JSON responses
+    // Safe configuration loader
     async function resolveFirebaseConfig() {
-      // 1. Try static JSON asset first (servable by Cloudflare Pages, CDNs, etc.)
       try {
         const res = await fetch('/firebase-applet-config.json', { cache: 'no-cache' });
         if (res.ok) {
@@ -1702,7 +2269,6 @@
         }
       } catch (_) {}
 
-      // 2. Try Node.js Express server API route if running
       try {
         const res = await fetch('/api/firebase-config', { cache: 'no-cache' });
         if (res.ok) {
@@ -1714,7 +2280,6 @@
         }
       } catch (_) {}
 
-      // 3. Guaranteed embedded configuration
       return EMBEDDED_FIREBASE_CONFIG;
     }
 
@@ -1726,7 +2291,6 @@
         auth = getAuth(app);
         db = config.firestoreDatabaseId ? getFirestore(app, config.firestoreDatabaseId) : getFirestore(app);
 
-        // Required connection test from Firebase Skill
         try {
           await getDocFromServer(doc(db, 'test', 'connection'));
         } catch (error) {
@@ -1735,7 +2299,6 @@
           }
         }
 
-        // Listen for Auth changes
         onAuthStateChanged(auth, async user => {
           if (user) {
             currentUser = user;
@@ -1747,6 +2310,7 @@
             currentUser = null;
             if (unsubscribeContacts) unsubscribeContacts();
             if (unsubscribeReports) unsubscribeReports();
+            if (unsubscribeLists) unsubscribeLists();
             document.getElementById('authOverlay').classList.remove('hidden');
           }
         });
@@ -1776,10 +2340,23 @@
         }
 
         const name = data.name || user.email.split('@')[0];
-        document.getElementById('sideUserName').textContent = name;
-        document.getElementById('sideUserEmail').textContent = user.email;
-        document.getElementById('sideAvatar').textContent = name.slice(0, 2).toUpperCase();
-        document.getElementById('sessionDeskOwner').textContent = `Desk for: ${name}`;
+        const sideNameEl = document.getElementById('sideUserName');
+        const sideEmailEl = document.getElementById('sideUserEmail');
+        if (sideNameEl) {
+          sideNameEl.textContent = name;
+          sideNameEl.title = name;
+        }
+        if (sideEmailEl) {
+          sideEmailEl.textContent = user.email;
+          sideEmailEl.title = user.email;
+        }
+        const sideAvatarEl = document.getElementById('sideAvatar');
+        if (sideAvatarEl) sideAvatarEl.textContent = name.slice(0, 2).toUpperCase();
+        
+        const deskOwnerEl = document.getElementById('sessionDeskOwner');
+        if (deskOwnerEl) {
+          deskOwnerEl.textContent = name ? `${name}'s Desk` : 'Personal Broadcast Desk';
+        }
 
         document.getElementById('profileName').value = name;
         document.getElementById('profileEmail').value = user.email;
@@ -1800,7 +2377,7 @@
         await updateDoc(doc(db, 'users', currentUser.uid), { name, company });
         await updateProfile(currentUser, { displayName: name });
         await loadUserProfile(currentUser);
-        window.showToast('Profile updated in Firestore.');
+        window.showToast('Profile updated successfully.');
       } catch (err) {
         window.showToast(err.message, true);
       }
@@ -1822,7 +2399,7 @@
         window.showToast(err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Sign In with Firebase';
+        btn.innerHTML = `<span>Sign In</span><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
       }
     };
 
@@ -1846,12 +2423,12 @@
           company,
           createdAt: new Date().toISOString()
         });
-        window.showToast('Firebase account created!');
+        window.showToast('Account created successfully!');
       } catch (err) {
         window.showToast(err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Create Firebase Account';
+        btn.innerHTML = `<span>Create Account</span><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
       }
     };
 
@@ -1870,7 +2447,7 @@
         window.showToast(err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Send Password Reset Email';
+        btn.textContent = 'Send Reset Link';
       }
     };
 
@@ -1887,7 +2464,7 @@
     window.doLogout = async function() {
       try {
         await signOut(auth);
-        window.showToast('Signed out of Firebase.');
+        window.showToast('Signed out of desk.');
       } catch (err) {
         window.showToast(err.message, true);
       }
@@ -1895,7 +2472,19 @@
 
     // Setup Realtime Firestore Listeners
     function setupFirestoreListeners(uid) {
-      // 1. Contacts Listener
+      const listsCol = collection(db, 'users', uid, 'lists');
+      unsubscribeLists = onSnapshot(listsCol, snap => {
+        userLists = [];
+        snap.forEach(d => userLists.push({ id: d.id, ...d.data() }));
+        userLists.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        renderListPills();
+        populateListDropdowns();
+        renderContactsTable();
+        updatePreview();
+      }, err => {
+        console.error('Lists snapshot error:', err);
+      });
+
       const contactsCol = collection(db, 'users', uid, 'contacts');
       unsubscribeContacts = onSnapshot(contactsCol, snap => {
         contactsList = [];
@@ -1903,13 +2492,15 @@
         if (selectedContactIds.size === 0 && contactsList.length > 0) {
           contactsList.forEach(c => selectedContactIds.add(c.id));
         }
+        renderListPills();
+        populateListDropdowns();
         renderContactsTable();
         updateMetrics();
+        updatePreview();
       }, err => {
         console.error('Contacts snapshot error:', err);
       });
 
-      // 2. Reports Listener
       const reportsCol = collection(db, 'users', uid, 'reports');
       unsubscribeReports = onSnapshot(reportsCol, snap => {
         reportsList = [];
@@ -1922,6 +2513,339 @@
       });
     }
 
+    function getColorClass(color) {
+      return ['emerald', 'blue', 'purple', 'amber', 'rose', 'slate'].includes(color)
+        ? `tag-${color}`
+        : 'tag-emerald';
+    }
+
+    // Render Contact List Pills
+    function renderListPills() {
+      const container = document.getElementById('dynamicListPills');
+      if (!container) return;
+
+      const pillCountAll = document.getElementById('pillCountAll');
+      if (pillCountAll) pillCountAll.textContent = contactsList.length;
+
+      const pillAll = document.getElementById('list-pill-all');
+      if (pillAll) {
+        if (activeContactListFilter === 'all') {
+          pillAll.classList.add('active');
+        } else {
+          pillAll.classList.remove('active');
+        }
+      }
+
+      container.innerHTML = userLists.map(l => {
+        const count = contactsList.filter(c => Array.isArray(c.listIds) && c.listIds.includes(l.id)).length;
+        const isActive = activeContactListFilter === l.id;
+        return `
+          <button class="list-pill ${isActive ? 'active' : ''}" onclick="window.filterByList('${escapeHtml(l.id)}')">
+            <span class="tag-chip ${getColorClass(l.color)}" style="padding: 1px 5px; font-size: 10px;">•</span>
+            <span>${escapeHtml(l.name)}</span>
+            <span class="pill-count">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Active List Banner
+      const banner = document.getElementById('activeListBanner');
+      if (activeContactListFilter !== 'all') {
+        const curList = userLists.find(l => l.id === activeContactListFilter);
+        if (curList) {
+          banner.classList.remove('hidden');
+          document.getElementById('activeListName').textContent = curList.name;
+          const count = contactsList.filter(c => Array.isArray(c.listIds) && c.listIds.includes(curList.id)).length;
+          document.getElementById('activeListMeta').textContent = `${count} contact(s) in this list${curList.description ? ' • ' + escapeHtml(curList.description) : ''}`;
+        } else {
+          banner.classList.add('hidden');
+        }
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    // Populate List Dropdowns
+    function populateListDropdowns() {
+      const bulkSel = document.getElementById('bulkAssignListSelect');
+      if (bulkSel) {
+        bulkSel.innerHTML = `
+          <option value="">Add to List…</option>
+          ${userLists.map(l => `<option value="${escapeHtml(l.id)}">+ ${escapeHtml(l.name)}</option>`).join('')}
+          ${activeContactListFilter !== 'all' ? `<option value="__remove_current__">− Remove from current list</option>` : ''}
+        `;
+      }
+
+      const addSel = document.getElementById('newContactListSelect');
+      if (addSel) {
+        const currentVal = addSel.value;
+        addSel.innerHTML = `
+          <option value="">None (Uncategorized)</option>
+          ${userLists.map(l => `<option value="${escapeHtml(l.id)}">${escapeHtml(l.name)}</option>`).join('')}
+        `;
+        if (currentVal) addSel.value = currentVal;
+      }
+
+      const compSel = document.getElementById('composerTargetListSelect');
+      if (compSel) {
+        const prevVal = composerTargetListId;
+        compSel.innerHTML = `
+          <option value="all">All Contacts (${contactsList.length})</option>
+          ${userLists.map(l => {
+            const count = contactsList.filter(c => Array.isArray(c.listIds) && c.listIds.includes(l.id)).length;
+            return `<option value="${escapeHtml(l.id)}">${escapeHtml(l.name)} (${count} contacts)</option>`;
+          }).join('')}
+        `;
+        if (userLists.some(l => l.id === prevVal) || prevVal === 'all') {
+          compSel.value = prevVal;
+        } else {
+          composerTargetListId = 'all';
+          compSel.value = 'all';
+        }
+      }
+    }
+
+    // Filter contacts view by list
+    window.filterByList = function(listId) {
+      activeContactListFilter = listId;
+      renderListPills();
+      populateListDropdowns();
+
+      if (listId === 'all') {
+        selectedContactIds.clear();
+        contactsList.forEach(c => selectedContactIds.add(c.id));
+      } else {
+        selectedContactIds.clear();
+        contactsList.filter(c => Array.isArray(c.listIds) && c.listIds.includes(listId))
+          .forEach(c => selectedContactIds.add(c.id));
+      }
+
+      renderContactsTable();
+    };
+
+    // Broadcast current list directly from Contact Manager
+    window.broadcastCurrentList = function() {
+      const listId = activeContactListFilter;
+      window.handleComposerTargetListChange(listId);
+      switchTab('composer');
+      const name = listId === 'all' ? 'All Contacts' : (userLists.find(l => l.id === listId)?.name || 'List');
+      window.showToast(`Selected "${name}" for WhatsApp broadcast.`);
+    };
+
+    // Campaign Composer: Target list change handler
+    window.handleComposerTargetListChange = function(listId) {
+      composerTargetListId = listId;
+      const compSel = document.getElementById('composerTargetListSelect');
+      if (compSel) compSel.value = listId;
+
+      if (listId === 'all') {
+        selectedContactIds.clear();
+        contactsList.forEach(c => selectedContactIds.add(c.id));
+        document.getElementById('composerAudiencePill').textContent = 'All Contacts';
+        document.getElementById('composerAudiencePill').className = 'badge badge-success';
+        document.getElementById('composerTargetHint').textContent = `Broadcasting to all ${contactsList.length} contacts in your desk.`;
+      } else {
+        const list = userLists.find(l => l.id === listId);
+        const targetContacts = contactsList.filter(c => Array.isArray(c.listIds) && c.listIds.includes(listId));
+        selectedContactIds.clear();
+        targetContacts.forEach(c => selectedContactIds.add(c.id));
+        document.getElementById('composerAudiencePill').textContent = list ? list.name : 'Target List';
+        document.getElementById('composerAudiencePill').className = 'badge badge-teal';
+        document.getElementById('composerTargetHint').textContent = `Targeting list "${list ? list.name : 'List'}" with ${targetContacts.length} recipient(s).`;
+      }
+
+      updateMetrics();
+      updatePreview();
+      renderContactsTable();
+    };
+
+    // List Creation & Management Modal Handlers
+    window.openCreateListModal = function() {
+      document.getElementById('newListName').value = '';
+      document.getElementById('newListColor').value = 'emerald';
+      document.getElementById('newListDesc').value = '';
+      document.getElementById('createListModal').classList.remove('hidden');
+    };
+
+    window.closeCreateListModal = function() {
+      document.getElementById('createListModal').classList.add('hidden');
+    };
+
+    window.handleCreateList = async function(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById('newListName').value.trim();
+      const color = document.getElementById('newListColor').value;
+      const description = document.getElementById('newListDesc').value.trim();
+      if (!name) return window.showToast('Please enter a list name.', true);
+
+      const id = `l_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      try {
+        await setDoc(doc(db, 'users', currentUser.uid, 'lists', id), {
+          id,
+          ownerId: currentUser.uid,
+          name,
+          color,
+          description,
+          createdAt: new Date().toISOString()
+        });
+        window.closeCreateListModal();
+        window.showToast(`List "${name}" created.`);
+        window.filterByList(id);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.openEditListModal = function() {
+      if (activeContactListFilter === 'all') return;
+      const list = userLists.find(l => l.id === activeContactListFilter);
+      if (!list) return;
+      document.getElementById('editListId').value = list.id;
+      document.getElementById('editListName').value = list.name;
+      document.getElementById('editListColor').value = list.color || 'emerald';
+      document.getElementById('editListDesc').value = list.description || '';
+      document.getElementById('editListModal').classList.remove('hidden');
+    };
+
+    window.closeEditListModal = function() {
+      document.getElementById('editListModal').classList.add('hidden');
+    };
+
+    window.handleUpdateList = async function(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const id = document.getElementById('editListId').value;
+      const name = document.getElementById('editListName').value.trim();
+      const color = document.getElementById('editListColor').value;
+      const description = document.getElementById('editListDesc').value.trim();
+      if (!id || !name) return;
+
+      try {
+        await updateDoc(doc(db, 'users', currentUser.uid, 'lists', id), {
+          name,
+          color,
+          description
+        });
+        window.closeEditListModal();
+        window.showToast(`List "${name}" updated.`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    window.deleteActiveList = async function() {
+      if (!currentUser || activeContactListFilter === 'all') return;
+      const list = userLists.find(l => l.id === activeContactListFilter);
+      if (!list) return;
+      if (!confirm(`Delete list "${list.name}"? Contacts in this list will remain saved in your desk.`)) return;
+
+      try {
+        const listId = list.id;
+        await deleteDoc(doc(db, 'users', currentUser.uid, 'lists', listId));
+        for (const c of contactsList) {
+          if (Array.isArray(c.listIds) && c.listIds.includes(listId)) {
+            const updated = c.listIds.filter(id => id !== listId);
+            await updateDoc(doc(db, 'users', currentUser.uid, 'contacts', c.id), { listIds: updated }).catch(() => {});
+          }
+        }
+        activeContactListFilter = 'all';
+        if (composerTargetListId === listId) {
+          window.handleComposerTargetListChange('all');
+        }
+        window.showToast(`List "${list.name}" deleted.`);
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
+    // Bulk List Assignment
+    window.handleBulkAssignList = async function(listId) {
+      if (!listId || !currentUser) return;
+      if (selectedContactIds.size === 0) {
+        document.getElementById('bulkAssignListSelect').value = '';
+        return window.showToast('Please select at least one contact using checkboxes.', true);
+      }
+
+      const selected = contactsList.filter(c => selectedContactIds.has(c.id));
+      if (listId === '__remove_current__') {
+        if (activeContactListFilter === 'all') {
+          document.getElementById('bulkAssignListSelect').value = '';
+          return window.showToast('Select a specific list tab first to remove contacts from it.', true);
+        }
+        const listToRemove = activeContactListFilter;
+        for (const c of selected) {
+          const current = Array.isArray(c.listIds) ? c.listIds : [];
+          const updated = current.filter(id => id !== listToRemove);
+          await updateDoc(doc(db, 'users', currentUser.uid, 'contacts', c.id), { listIds: updated });
+        }
+        window.showToast(`Removed ${selected.length} contact(s) from list.`);
+      } else {
+        const targetList = userLists.find(l => l.id === listId);
+        for (const c of selected) {
+          const current = Array.isArray(c.listIds) ? [...c.listIds] : [];
+          if (!current.includes(listId)) {
+            current.push(listId);
+            await updateDoc(doc(db, 'users', currentUser.uid, 'contacts', c.id), { listIds: current });
+          }
+        }
+        window.showToast(`Added ${selected.length} contact(s) to "${targetList?.name || 'List'}".`);
+      }
+      document.getElementById('bulkAssignListSelect').value = '';
+    };
+
+    // Single Contact Lists Modal
+    window.openContactListsModal = function(contactId) {
+      const contact = contactsList.find(c => c.id === contactId);
+      if (!contact) return;
+      document.getElementById('contactListsTargetContactId').value = contactId;
+      document.getElementById('contactListsModalDesc').textContent = `Assign lists for ${contact.name} (${contact.phone})`;
+
+      const container = document.getElementById('contactListsCheckboxes');
+      if (userLists.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: var(--slate-500); padding: 14px; font-size: 12px;">
+            No lists created yet. Click "+ Create List" above to make your first list.
+          </div>
+        `;
+      } else {
+        const contactLists = Array.isArray(contact.listIds) ? contact.listIds : [];
+        container.innerHTML = userLists.map(l => `
+          <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-sm); cursor: pointer;">
+            <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;">
+              <span class="tag-chip ${getColorClass(l.color)}" style="padding: 1px 5px; font-size: 10px;">•</span>
+              <span>${escapeHtml(l.name)}</span>
+            </span>
+            <input type="checkbox" value="${escapeHtml(l.id)}" ${contactLists.includes(l.id) ? 'checked' : ''} class="contact-list-chk">
+          </label>
+        `).join('');
+      }
+      document.getElementById('contactListsModal').classList.remove('hidden');
+    };
+
+    window.closeContactListsModal = function() {
+      document.getElementById('contactListsModal').classList.add('hidden');
+    };
+
+    window.saveContactListsAssignment = async function() {
+      if (!currentUser) return;
+      const contactId = document.getElementById('contactListsTargetContactId').value;
+      if (!contactId) return;
+
+      const chks = document.querySelectorAll('#contactListsCheckboxes .contact-list-chk');
+      const checkedListIds = Array.from(chks).filter(c => c.checked).map(c => c.value);
+
+      try {
+        await updateDoc(doc(db, 'users', currentUser.uid, 'contacts', contactId), {
+          listIds: checkedListIds
+        });
+        window.closeContactListsModal();
+        window.showToast('Contact lists updated.');
+      } catch (err) {
+        window.showToast(err.message, true);
+      }
+    };
+
     // Contacts Table Rendering
     window.renderContactsTable = function() {
       const tbody = document.getElementById('contactsTableBody');
@@ -1929,42 +2853,78 @@
       const filter = document.getElementById('contactFilterSelect')?.value || 'all';
 
       const filtered = contactsList.filter(c => {
-        const matchesSearch = c.name?.toLowerCase().includes(search) || c.phone?.includes(search);
+        if (activeContactListFilter !== 'all') {
+          const inList = Array.isArray(c.listIds) && c.listIds.includes(activeContactListFilter);
+          if (!inList) return false;
+        }
+
+        const assignedListNames = (Array.isArray(c.listIds) ? c.listIds : [])
+          .map(id => userLists.find(l => l.id === id)?.name?.toLowerCase() || '')
+          .join(' ');
+        const matchesSearch = c.name?.toLowerCase().includes(search) ||
+                              c.phone?.includes(search) ||
+                              assignedListNames.includes(search);
         if (!matchesSearch) return false;
+
         if (filter === 'selected') return selectedContactIds.has(c.id);
         if (filter === 'opted') return c.optedIn;
         if (filter === 'unverified') return !c.optedIn;
         return true;
       });
 
+      const currentListName = activeContactListFilter === 'all'
+        ? 'all lists'
+        : `"${userLists.find(l => l.id === activeContactListFilter)?.name || 'selected list'}"`;
+
       document.getElementById('contactsCountSummary').textContent =
-        `Showing ${filtered.length} of ${contactsList.length} contacts (${selectedContactIds.size} selected)`;
+        `Showing ${filtered.length} of ${contactsList.length} contacts in ${currentListName} (${selectedContactIds.size} selected for broadcast)`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--slate-500);">No matching contacts found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 28px; color: var(--slate-500);">No matching contacts found in this view.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(c => `
-        <tr>
-          <td style="text-align: center;">
-            <input type="checkbox" ${selectedContactIds.has(c.id) ? 'checked' : ''} onchange="window.toggleSelectContact('${escapeHtml(c.id)}')">
-          </td>
-          <td><b>${escapeHtml(c.name)}</b></td>
-          <td class="mono">${escapeHtml(c.phone)}</td>
-          <td>
-            ${c.optedIn
-              ? '<span class="badge badge-success">✓ Opted-in</span>'
-              : '<span class="badge badge-warning">⚠️ Needs Consent</span>'}
-          </td>
-          <td style="color: var(--slate-500); font-size: 11px;">
-            ${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'N/A'}
-          </td>
-          <td style="text-align: right;">
-            <button class="btn btn-sm btn-danger" style="padding: 2px 7px; font-size: 11px;" onclick="window.deleteSingleContact('${escapeHtml(c.id)}')">Delete</button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = filtered.map(c => {
+        const assignedLists = (Array.isArray(c.listIds) ? c.listIds : [])
+          .map(id => userLists.find(l => l.id === id))
+          .filter(Boolean);
+
+        const listChips = assignedLists.map(l =>
+          `<span class="tag-chip ${getColorClass(l.color)}">${escapeHtml(l.name)}</span>`
+        ).join('');
+
+        const tagsHtml = `
+          <div style="display: flex; flex-wrap: wrap; gap: 4px; align-items: center; max-width: 220px;">
+            ${listChips || '<span style="color: var(--slate-400); font-size: 11px;">Unassigned</span>'}
+            <button type="button" class="tag-chip tag-chip-add" title="Edit lists" onclick="window.openContactListsModal('${escapeHtml(c.id)}')">+ List</button>
+          </div>
+        `;
+
+        return `
+          <tr>
+            <td style="text-align: center;">
+              <input type="checkbox" ${selectedContactIds.has(c.id) ? 'checked' : ''} onchange="window.toggleSelectContact('${escapeHtml(c.id)}')">
+            </td>
+            <td><b>${escapeHtml(c.name)}</b></td>
+            <td class="mono">${escapeHtml(c.phone)}</td>
+            <td>${tagsHtml}</td>
+            <td>
+              ${c.optedIn
+                ? '<span class="badge badge-success"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Opted-in</span>'
+                : '<span class="badge badge-warning"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Needs Consent</span>'}
+            </td>
+            <td style="color: var(--slate-500); font-size: 11px; font-variant-numeric: tabular-nums;">
+              ${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'N/A'}
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-sm btn-danger" style="padding: 3px 8px; font-size: 11px;" onclick="window.deleteSingleContact('${escapeHtml(c.id)}')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Delete</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       const chkAll = document.getElementById('chkSelectAllRows');
       if (chkAll) chkAll.checked = filtered.length > 0 && filtered.every(c => selectedContactIds.has(c.id));
@@ -1986,6 +2946,10 @@
       const search = (document.getElementById('contactSearchInput')?.value || '').toLowerCase();
       const filter = document.getElementById('contactFilterSelect')?.value || 'all';
       const filtered = contactsList.filter(c => {
+        if (activeContactListFilter !== 'all') {
+          const inList = Array.isArray(c.listIds) && c.listIds.includes(activeContactListFilter);
+          if (!inList) return false;
+        }
         const matchesSearch = c.name?.toLowerCase().includes(search) || c.phone?.includes(search);
         if (!matchesSearch) return false;
         if (filter === 'selected') return selectedContactIds.has(c.id);
@@ -2003,9 +2967,15 @@
     };
 
     window.selectAllFiltered = function() {
-      contactsList.forEach(c => selectedContactIds.add(c.id));
+      const filtered = contactsList.filter(c => {
+        if (activeContactListFilter !== 'all') {
+          return Array.isArray(c.listIds) && c.listIds.includes(activeContactListFilter);
+        }
+        return true;
+      });
+      filtered.forEach(c => selectedContactIds.add(c.id));
       renderContactsTable();
-      window.showToast(`Selected all ${contactsList.length} contacts.`);
+      window.showToast(`Selected ${filtered.length} contacts.`);
     };
 
     window.clearSelected = function() {
@@ -2018,7 +2988,7 @@
       try {
         await deleteDoc(doc(db, 'users', currentUser.uid, 'contacts', id));
         selectedContactIds.delete(id);
-        window.showToast('Contact deleted from Firestore.');
+        window.showToast('Contact deleted.');
       } catch (err) {
         window.showToast(err.message, true);
       }
@@ -2045,18 +3015,27 @@
       const name = document.getElementById('newContactName').value.trim();
       const phone = document.getElementById('newContactPhone').value.replace(/\D/g, '');
       const optedIn = document.getElementById('newContactConsent').checked;
+      const listSelectVal = document.getElementById('newContactListSelect')?.value || '';
 
       if (!phone || phone.length < 8 || phone.length > 15) {
         return window.showToast('Please enter an 8-15 digit phone number with country code.', true);
       }
 
       const id = `c_${Date.now()}_${phone}`;
+      const contactListIds = [];
+      if (listSelectVal) {
+        contactListIds.push(listSelectVal);
+      } else if (activeContactListFilter !== 'all') {
+        contactListIds.push(activeContactListFilter);
+      }
+
       const contactObj = {
         id,
         ownerId: currentUser.uid,
         name,
         phone,
         optedIn,
+        listIds: contactListIds,
         createdAt: new Date().toISOString()
       };
 
@@ -2064,13 +3043,13 @@
         await setDoc(doc(db, 'users', currentUser.uid, 'contacts', id), contactObj);
         selectedContactIds.add(id);
         closeAddContactModal();
-        window.showToast(`Added ${name} to Firestore.`);
+        window.showToast(`Contact ${name} saved.`);
       } catch (err) {
         window.showToast(err.message, true);
       }
     };
 
-    // CSV Contact Import (Bulk save to Firestore)
+    // CSV Contact Import
     window.handleCsvUpload = async function(e) {
       const file = e.target.files[0];
       if (!file || !currentUser) return;
@@ -2088,8 +3067,13 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
 
-        window.showToast(`Saving ${data.count} contacts to Firestore…`);
+        window.showToast(`Importing ${data.count} contacts…`);
         for (const c of data.contacts) {
+          if (activeContactListFilter !== 'all') {
+            c.listIds = [activeContactListFilter];
+          } else {
+            c.listIds = c.listIds || [];
+          }
           await setDoc(doc(db, 'users', currentUser.uid, 'contacts', c.id), c);
           selectedContactIds.add(c.id);
         }
@@ -2100,9 +3084,7 @@
       e.target.value = '';
     };
 
-    // ==========================================
     // MEDIA ATTACHMENTS & CLIPBOARD PASTE
-    // ==========================================
     function setAttachedMedia(file, customFilename) {
       if (file.size > 16 * 1024 * 1024) {
         return window.showToast('Media file exceeds 16MB limit.', true);
@@ -2120,7 +3102,6 @@
           isImage
         };
 
-        // Render attachment card
         const card = document.getElementById('attachedMediaCard');
         const thumb = document.getElementById('attachedMediaThumb');
         const docIcon = document.getElementById('attachedMediaDocIcon');
@@ -2204,7 +3185,6 @@
         badge.textContent = 'No recipient selected';
       }
 
-      // Preview Media Container
       const mediaContainer = document.getElementById('previewMediaContainer');
       const previewImg = document.getElementById('previewImageElement');
       const previewDoc = document.getElementById('previewDocElement');
@@ -2227,32 +3207,82 @@
         previewDoc.classList.add('hidden');
       }
 
-      // Checklist Status
-      const chkMsg = document.getElementById('chk-message');
-      if (message.trim().length > 0 || attachedMedia) {
-        chkMsg.textContent = attachedMedia ? '✓ Message / Media Attached' : '✓ Message Written';
-        chkMsg.style.color = '#15803d';
-      } else {
-        chkMsg.textContent = '○ Add Message or Media';
-        chkMsg.style.color = 'var(--slate-500)';
-      }
-
-      const chkContacts = document.getElementById('chk-contacts');
-      if (selectedContactIds.size > 0) {
-        chkContacts.textContent = `✓ ${selectedContactIds.size} Recipient(s) Selected`;
-        chkContacts.style.color = '#15803d';
-      } else {
-        chkContacts.textContent = '○ Select Recipients';
-        chkContacts.style.color = 'var(--slate-500)';
-      }
+      updateLaunchChecklist();
     }
 
     document.getElementById('composerMessage').addEventListener('input', updatePreview);
+
+    function updateLaunchChecklist() {
+      const chkConn = document.getElementById('chk-connected');
+      const iconConn = document.getElementById('chk-icon-conn');
+      const textConn = document.getElementById('chk-text-conn');
+
+      const chkContacts = document.getElementById('chk-contacts');
+      const iconContacts = document.getElementById('chk-icon-contacts');
+      const textContacts = document.getElementById('chk-text-contacts');
+
+      const chkMsg = document.getElementById('chk-message');
+      const iconMsg = document.getElementById('chk-icon-msg');
+      const textMsg = document.getElementById('chk-text-msg');
+      const readyBadge = document.getElementById('checklistReadyBadge');
+
+      const isConn = window.isWhatsAppConnected === true;
+      const count = selectedContactIds ? selectedContactIds.size : 0;
+      const msgInput = document.getElementById('composerMessage');
+      const hasMsg = (msgInput && msgInput.value.trim().length > 0) || (attachedMedia !== null);
+
+      if (chkConn) {
+        if (isConn) {
+          chkConn.className = 'chk-row ready';
+          if (iconConn) iconConn.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+          if (textConn) textConn.textContent = 'WhatsApp Session Connected';
+        } else {
+          chkConn.className = 'chk-row pending';
+          if (iconConn) iconConn.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>';
+          if (textConn) textConn.textContent = 'WhatsApp Session Disconnected';
+        }
+      }
+
+      if (chkContacts) {
+        if (count > 0) {
+          chkContacts.className = 'chk-row ready';
+          if (iconContacts) iconContacts.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+          if (textContacts) textContacts.innerHTML = `Recipients Selected (<b>${count}</b>)`;
+        } else {
+          chkContacts.className = 'chk-row pending';
+          if (iconContacts) iconContacts.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>';
+          if (textContacts) textContacts.innerHTML = `Recipients Selected (<b>0</b>)`;
+        }
+      }
+
+      if (chkMsg) {
+        if (hasMsg) {
+          chkMsg.className = 'chk-row ready';
+          if (iconMsg) iconMsg.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+          if (textMsg) textMsg.textContent = attachedMedia ? 'Message & Media Ready' : 'Message Body Ready';
+        } else {
+          chkMsg.className = 'chk-row pending';
+          if (iconMsg) iconMsg.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>';
+          if (textMsg) textMsg.textContent = 'Message or Media Added';
+        }
+      }
+
+      if (readyBadge) {
+        if (isConn && count > 0 && hasMsg) {
+          readyBadge.className = 'badge badge-success';
+          readyBadge.textContent = 'Ready to Broadcast';
+        } else {
+          readyBadge.className = 'badge badge-warning';
+          readyBadge.textContent = 'Needs Setup';
+        }
+      }
+    }
 
     function updateMetrics() {
       document.getElementById('statTotalContacts').textContent = contactsList.length;
       document.getElementById('statSelectedRecipients').textContent = selectedContactIds.size;
       document.getElementById('composerSelCount').textContent = selectedContactIds.size;
+      updateLaunchChecklist();
     }
 
     // Review & Send Modal
@@ -2270,42 +3300,53 @@
       const unverifiedCount = selectedList.filter(c => !c.optedIn).length;
       const campaignName = document.getElementById('composerCampaignName').value.trim() || 'Untitled Broadcast';
 
-      pendingBatch = { campaignName, contacts: selectedList, message, media: attachedMedia };
+      const targetListName = composerTargetListId === 'all'
+        ? 'All Contacts'
+        : (userLists.find(l => l.id === composerTargetListId)?.name || 'Target List');
+
+      pendingBatch = {
+        campaignName,
+        targetListName,
+        targetListId: composerTargetListId,
+        contacts: selectedList,
+        message,
+        media: attachedMedia
+      };
 
       const container = document.getElementById('reviewSummaryDetails');
       container.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
-          <div style="background: var(--slate-50); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
-            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase;">Campaign Name</div>
+          <div style="background: var(--slate-50); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
+            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase; font-weight: 700;">Campaign Name</div>
             <b style="font-size: 13px; color: var(--slate-900); word-break: break-all;">${escapeHtml(campaignName)}</b>
           </div>
-          <div style="background: var(--slate-50); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
-            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase;">Total Recipients</div>
-            <b style="font-size: 13px; color: var(--primary);">${selectedList.length} Contacts</b>
+          <div style="background: var(--slate-50); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--slate-200);">
+            <div style="font-size: 10.5px; color: var(--slate-500); text-transform: uppercase; font-weight: 700;">Target Audience</div>
+            <b style="font-size: 13px; color: var(--wa-teal);">${escapeHtml(targetListName)} (${selectedList.length} Contacts)</b>
           </div>
         </div>
 
         ${attachedMedia ? `
-          <div style="background: var(--primary-soft); border: 1px solid #bbf7d0; padding: 8px 12px; border-radius: var(--radius-md); font-size: 12px; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 16px;">📎</span>
+          <div style="background: #e7f7ef; border: 1px solid #a7f3d0; padding: 10px 12px; border-radius: var(--radius-md); font-size: 12px; color: #006853; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" style="color: var(--wa-teal);"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             <span style="word-break: break-all;">Attached Media: <b>${escapeHtml(attachedMedia.filename)}</b> (${formatBytes(attachedMedia.size)})</span>
           </div>
         ` : ''}
 
-        <div style="font-size: 12px; font-weight: 700; color: var(--slate-700); margin-bottom: 5px;">Recipients (${selectedList.length})</div>
-        <div style="max-height: 100px; overflow-y: auto; border: 1px solid var(--slate-200); border-radius: var(--radius-md); margin-bottom: 12px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--slate-700); margin-bottom: 6px;">Recipients (${selectedList.length})</div>
+        <div style="max-height: 120px; overflow-y: auto; border: 1px solid var(--slate-200); border-radius: var(--radius-md); margin-bottom: 12px;">
           ${selectedList.slice(0, 10).map(c => `
-            <div style="padding: 5px 8px; border-bottom: 1px solid var(--slate-100); font-size: 11.5px; display: flex; justify-content: space-between;">
-              <span><b>${escapeHtml(c.name)}</b> (${escapeHtml(c.phone)})</span>
-              ${c.optedIn ? '<span style="color: #15803d; font-size: 10.5px;">Opted In</span>' : '<span style="color: #b45309; font-size: 10.5px;">Unverified</span>'}
+            <div style="padding: 6px 10px; border-bottom: 1px solid var(--slate-100); font-size: 11.5px; display: flex; justify-content: space-between; align-items: center;">
+              <span><b>${escapeHtml(c.name)}</b> <span class="mono" style="color: var(--slate-500);">(${escapeHtml(c.phone)})</span></span>
+              ${c.optedIn ? '<span class="badge badge-success" style="font-size: 10px;">Opted In</span>' : '<span class="badge badge-warning" style="font-size: 10px;">Unverified</span>'}
             </div>
           `).join('')}
-          ${selectedList.length > 10 ? `<div style="padding: 5px 8px; font-size: 10.5px; color: var(--slate-500);">...and ${selectedList.length - 10} more</div>` : ''}
+          ${selectedList.length > 10 ? `<div style="padding: 6px 10px; font-size: 11px; color: var(--slate-500); text-align: center;">...and ${selectedList.length - 10} more</div>` : ''}
         </div>
 
         ${unverifiedCount > 0 ? `
-          <div style="background: var(--warning-soft); border-left: 4px solid var(--warning); padding: 8px 10px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-top: 10px;">
-            ⚠️ <b>Notice:</b> ${unverifiedCount} contact(s) lack an explicit opt-in confirmation. Please ensure consent before sending.
+          <div style="background: var(--warning-soft); border-left: 3px solid var(--warning); padding: 8px 10px; border-radius: var(--radius-sm); font-size: 11.5px; color: #854d0e; margin-top: 10px;">
+            <b>Notice:</b> ${unverifiedCount} contact(s) lack an explicit opt-in confirmation. Please ensure consent before sending.
           </div>
         ` : ''}
       `;
@@ -2361,12 +3402,13 @@
           throw new Error(data.error || `Server returned error (${res.status})`);
         }
 
-        // Record Campaign in Firestore
         const campRef = doc(collection(db, 'users', currentUser.uid, 'campaigns'));
         await setDoc(campRef, {
           id: campRef.id,
           ownerId: currentUser.uid,
           title: pendingBatch.campaignName,
+          targetListName: pendingBatch.targetListName,
+          targetListId: pendingBatch.targetListId,
           message: pendingBatch.message,
           hasMedia: Boolean(pendingBatch.media),
           mediaName: pendingBatch.media?.filename || '',
@@ -2375,7 +3417,6 @@
           createdAt: new Date().toISOString()
         });
 
-        // Record initial submitted logs in Firestore
         for (const c of pendingBatch.contacts) {
           const reportRef = doc(collection(db, 'users', currentUser.uid, 'reports'));
           await setDoc(reportRef, {
@@ -2397,7 +3438,7 @@
         window.showToast(err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Confirm & Send Now';
+        btn.textContent = 'Confirm & Send';
       }
     };
 
@@ -2425,12 +3466,12 @@
             </span>
           </td>
           <td>
-            ${r.hasMedia ? '<span class="badge badge-neutral">📎 Media</span>' : '<span style="color: #94a3b8; font-size: 11px;">None</span>'}
+            ${r.hasMedia ? '<span class="badge badge-neutral"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Media</span>' : '<span style="color: var(--slate-400); font-size: 11px;">None</span>'}
           </td>
           <td style="font-size: 11.5px; color: var(--slate-600); max-width: 260px; white-space: normal;">
             ${escapeHtml(r.detail)}
           </td>
-          <td style="color: var(--slate-500); font-size: 11px;">
+          <td style="color: var(--slate-500); font-size: 11px; font-variant-numeric: tabular-nums;">
             ${r.at ? new Date(r.at).toLocaleTimeString() : 'N/A'}
           </td>
         </tr>
@@ -2439,7 +3480,7 @@
 
     window.clearReportsInFirestore = async function() {
       if (!currentUser || reportsList.length === 0) return;
-      if (!confirm('Clear all report entries from Firestore?')) return;
+      if (!confirm('Clear all delivery report logs from this workspace?')) return;
       try {
         for (const r of reportsList) {
           await deleteDoc(doc(db, 'users', currentUser.uid, 'reports', r.id));
@@ -2499,47 +3540,46 @@
       const qrImg = document.getElementById('qrDisplayImage');
       const qrTitle = document.getElementById('qrMessageTitle');
       const qrDesc = document.getElementById('qrMessageDesc');
-      const chkConn = document.getElementById('chk-connected');
+      const qrIcon = document.getElementById('qrLoadingIcon');
 
       pill.className = 'wa-status-badge';
       diagStatus.textContent = (data.status || 'STANDALONE').toUpperCase();
       diagPhone.textContent = data.connectedPhone || 'None';
       diagSync.textContent = data.lastSync ? new Date(data.lastSync).toLocaleTimeString() : 'Never';
+      window.isWhatsAppConnected = Boolean(data && data.connected);
 
       if (data.connected) {
         pill.classList.add('status-connected');
         text.textContent = 'CONNECTED';
         qrImg.classList.add('hidden');
+        if (qrIcon) qrIcon.classList.remove('hidden');
         qrTitle.textContent = `Connected: ${data.connectedPhone || 'WhatsApp Web'}`;
         qrDesc.textContent = 'Your session is active and ready to broadcast.';
-        chkConn.textContent = '✓ WhatsApp Session Connected';
-        chkConn.style.color = '#15803d';
       } else if (data.status === 'qr' && data.qrDataUrl) {
         pill.classList.add('status-qr');
         text.textContent = 'SCAN QR';
         qrImg.src = data.qrDataUrl;
         qrImg.classList.remove('hidden');
+        if (qrIcon) qrIcon.classList.add('hidden');
         qrTitle.textContent = 'Scan with WhatsApp on your phone';
         qrDesc.textContent = 'Open WhatsApp → Linked Devices → Link a Device and point your camera here.';
-        chkConn.textContent = '○ Scan WhatsApp QR Code';
-        chkConn.style.color = '#b45309';
       } else if (data.status === 'starting' || data.status === 'connecting') {
         pill.classList.add('status-connecting');
         text.textContent = 'CONNECTING…';
         qrImg.classList.add('hidden');
+        if (qrIcon) qrIcon.classList.remove('hidden');
         qrTitle.textContent = 'Starting WhatsApp Web…';
         qrDesc.textContent = data.message || 'Connecting to WhatsApp servers…';
-        chkConn.textContent = '○ Connecting WhatsApp…';
-        chkConn.style.color = '#b45309';
       } else {
         pill.classList.add('status-disconnected');
         text.textContent = 'DISCONNECTED';
         qrImg.classList.add('hidden');
+        if (qrIcon) qrIcon.classList.remove('hidden');
         qrTitle.textContent = 'WhatsApp Web Disconnected';
         qrDesc.textContent = data.message || 'Click "Start Pairing" to link your WhatsApp session.';
-        chkConn.textContent = '○ WhatsApp Session Disconnected';
-        chkConn.style.color = 'var(--slate-500)';
       }
+
+      updateLaunchChecklist();
     }
 
     window.requestConnect = async function() {
@@ -2578,12 +3618,10 @@
       }
     };
 
-    // Polling WhatsApp status periodically
     setInterval(() => {
       if (currentUser) window.fetchStatus();
     }, 6000);
 
-    // Run Firebase Init
     initFirebase();
   </script>
 
@@ -2614,7 +3652,6 @@
       const mobBtn = document.getElementById(`mob-${tabId}`);
       if (mobBtn) mobBtn.classList.add('active');
 
-      // Scroll to top of content on mobile tab change
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

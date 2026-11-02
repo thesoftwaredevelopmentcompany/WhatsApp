@@ -44,6 +44,20 @@
       },
       "required": ["id", "ownerId", "message", "hasMedia", "recipientCount", "createdAt"]
     },
+    "ContactList": {
+      "title": "Contact List",
+      "description": "User's audience list or tag segment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "color": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "createdAt"]
+    },
     "Report": {
       "title": "Report",
       "description": "Per-recipient delivery log",
@@ -69,6 +83,10 @@
     "/users/{userId}/contacts/{contactId}": {
       "schema": "Contact",
       "description": "User's isolated contact list"
+    },
+    "/users/{userId}/lists/{listId}": {
+      "schema": "ContactList",
+      "description": "User's audience lists/segments"
     },
     "/users/{userId}/campaigns/{campaignId}": {
       "schema": "Campaign",

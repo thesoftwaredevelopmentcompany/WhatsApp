@@ -46,6 +46,16 @@ service cloud.firestore {
           && request.resource.data.ownerId == request.auth.uid;
       }
 
+      // Isolated user contact lists
+      match /lists/{listId} {
+        allow get, delete: if isValidId(userId) && isValidId(listId) && isOwner(userId);
+        allow list: if isValidId(userId) && isOwner(userId);
+        allow create: if isValidId(userId) && isValidId(listId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+        allow update: if isValidId(userId) && isValidId(listId) && isOwner(userId)
+          && request.resource.data.ownerId == request.auth.uid;
+      }
+
       // Isolated user broadcast reports
       match /reports/{reportId} {
         allow get, delete: if isValidId(userId) && isValidId(reportId) && isOwner(userId);
