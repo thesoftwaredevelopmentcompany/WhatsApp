@@ -6,7 +6,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
-    "build": "node -e 'const fs=require(\"fs\"); fs.copyFileSync(\"public/index.html\", \"index.html\"); fs.copyFileSync(\"public/firebase-applet-config.json\", \"firebase-applet-config.json\"); console.log(\"Build successful: static assets ready for Cloudflare\")'",
+    "build": "node -e 'const fs=require(\"fs\"); fs.copyFileSync(\"public/index.html\", \"index.html\"); fs.copyFileSync(\"public/firebase-applet-config.json\", \"firebase-applet-config.json\"); if (fs.existsSync(\"_redirects\")) fs.unlinkSync(\"_redirects\"); if (fs.existsSync(\"public/_redirects\")) fs.unlinkSync(\"public/_redirects\"); console.log(\"Build successful: static assets ready for Cloudflare\")'",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev",
     "lint": "node -e 'console.log(\"Lint check clean\")'",
     "start": "node server.js"
   },
